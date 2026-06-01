@@ -12,6 +12,7 @@
             --text-main: #333;
             --text-light: #ecf0f1;
             --accent: #3498db;
+            --powershell-blue: #002451;
             --code-bg: #272822;
             --code-text: #f8f8f2;
         }
@@ -27,7 +28,7 @@
 
         /* Sidebar Navigation */
         nav {
-            width: 250px;
+            width: 260px;
             background-color: var(--sidebar-bg);
             color: var(--text-light);
             position: fixed;
@@ -38,9 +39,11 @@
 
         nav h2 {
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 20px;
             padding: 0 15px;
+            border-bottom: 1px solid var(--sidebar-hover);
+            padding-bottom: 15px;
         }
 
         nav ul {
@@ -51,11 +54,12 @@
 
         nav ul li a {
             display: block;
-            padding: 15px 20px;
+            padding: 12px 20px;
             color: var(--text-light);
             text-decoration: none;
             border-bottom: 1px solid #1a252f;
             transition: background 0.2s;
+            font-size: 0.95rem;
         }
 
         nav ul li a:hover {
@@ -63,11 +67,21 @@
             border-left: 4px solid var(--accent);
         }
 
+        nav ul li.menu-header {
+            padding: 15px 20px 5px 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+
         /* Main Content */
         main {
-            margin-left: 250px;
+            margin-left: 260px;
             padding: 40px;
             max-width: 900px;
+            width: 100%;
         }
 
         section {
@@ -85,9 +99,17 @@
             margin-top: 0;
         }
 
+        .ps-section h1 {
+            border-bottom: 2px solid #3a7bd5;
+        }
+
         h3 {
             color: var(--accent);
             margin-top: 25px;
+        }
+
+        .ps-section h3 {
+            color: #3a7bd5;
         }
 
         ol, ul {
@@ -106,6 +128,13 @@
             border-radius: 5px;
             overflow-x: auto;
             font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* PowerShell specific code style */
+        pre.powershell {
+            background-color: var(--powershell-blue);
+            color: #ffffff;
+            border-left: 5px solid #1f9eff;
         }
 
         code {
@@ -128,6 +157,10 @@
             color: #e74c3c;
         }
 
+        .ps-comment {
+            color: #00ff00;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             body {
@@ -148,14 +181,23 @@
 <body>
 
     <nav>
-        <h2>Infrastructure Fundamentals</h2>
+        <h2>PLF Cheatsheet</h2>
         <ul>
             <li><a href="#start">⏱️ Start-routine</a></li>
+            
+            <li class="menu-header">🖥️ GUI & Linux (Origineel)</li>
             <li><a href="#plf08">🟢 PLF08: RRAS & VyOS</a></li>
             <li><a href="#plf09">🔵 PLF09: Sites & Failover</a></li>
             <li><a href="#plf10">🟠 PLF10: Group Policies</a></li>
             <li><a href="#plf11">🔴 PLF11: Security & PKI</a></li>
             <li><a href="#plf12">🟣 PLF12: VPN & NPS</a></li>
+
+            <li class="menu-header">🟦 PowerShell Core Editie</li>
+            <li><a href="#ps-plf08">🔹 PS: RRAS / NAT</a></li>
+            <li><a href="#ps-plf09">🔹 PS: Sites & Failover</a></li>
+            <li><a href="#ps-plf10">🔹 PS: Group Policies</a></li>
+            <li><a href="#ps-plf11">🔹 PS: Firewall & IPsec</a></li>
+            <li><a href="#ps-plf12">🔹 PS: VPN & NPS</a></li>
         </ul>
     </nav>
 
@@ -165,14 +207,13 @@
             <p>Je hebt <strong>15 minuten per taak</strong>. Tijd is je grootste vijand.</p>
             <ul>
                 <li><strong>Minuut 1-3:</strong> Lees de 3 taken. Identificeer afhankelijkheden. Moet je een CA opzetten voordat je VPN kunt configureren? Doe dat in de juiste volgorde.</li>
-                <li><strong>Multitasken is verplicht:</strong> Start direct de installatie van zware Server Roles (ADDS, AD CS, RRAS). Terwijl de blauwe balkjes lopen, configureer je alvast IP-adressen via <code>ncpa.cpl</code> of schrijf je je Linux configuratie uit.</li>
+                <li><strong>Multitasken is verplicht:</strong> Start direct de installatie van zware Server Roles (ADDS, AD CS, RRAS). Terwijl de blauwe balkjes lopen, configureer je alvast IP-adressen of schrijf je je Linux configuratie uit.</li>
                 <li><strong>Ping & DNS:</strong> 90% van de fouten komt door DNS. Werkt het joinen van een nieuwe VM aan het domein niet? Controleer direct je netwerkadapter: je Primary DNS <span class="highlight">moet</span> naar je Domain Controller wijzen.</li>
             </ul>
         </section>
 
         <section id="plf08">
-            <h1>🟢 PLF08: Directory Services 1</h1>
-            
+            <h1>🟢 PLF08: Directory Services 1 (GUI)</h1>
             <h3>Windows RRAS (Router & NAT) via GUI</h3>
             <ol>
                 <li><strong>Role Installeren:</strong> Server Manager > <em>Manage</em> > <em>Add Roles and Features</em> > Vink <strong>Remote Access</strong> aan > Vink bij Role Services <strong>Routing</strong> aan.</li>
@@ -184,28 +225,22 @@
             </ol>
 
             <h3>VyOS Base Routing & NAT (Linux CLI)</h3>
-            <p>Gebruik de CLI. Om tijd te besparen bij het overschakelen tussen machines, kun je vooraf je public-key string instellen voor passwordless SSH, zodat je razendsnel commando's kunt plakken.</p>
 <pre><code>configure
-# Interfaces instellen
 set interfaces ethernet eth0 address dhcp                # Buitenkant (WAN)
 set interfaces ethernet eth1 address 192.168.10.1/24     # Binnenkant (LAN)
 
-# NAT (Masquerade) instellen
 set nat source rule 100 outbound-interface eth0
 set nat source rule 100 source address 192.168.10.0/24
 set nat source rule 100 translation address masquerade
 
-# Default route instellen
 set protocols static route 0.0.0.0/0 next-hop &lt;IP_VAN_GATEWAY&gt;
-
 commit
 save
 exit</code></pre>
         </section>
 
         <section id="plf09">
-            <h1>🔵 PLF09: Directory Services 2</h1>
-            
+            <h1>🔵 PLF09: Directory Services 2 (GUI)</h1>
             <h3>AD Sites & Subnets (GUI)</h3>
             <ol>
                 <li><em>Tools</em> > <em>Active Directory Sites and Services</em>.</li>
@@ -215,117 +250,151 @@ exit</code></pre>
             </ol>
 
             <h3>DHCP Failover (GUI)</h3>
-            <p><em>Voorwaarde: De DHCP-role moet op beide servers (bijv. Primary en T-DHCP-02) geïnstalleerd én geautoriseerd zijn.</em></p>
             <ol>
                 <li><em>Tools</em> > <em>DHCP</em> > Vouw de lokale server uit > IPv4.</li>
                 <li>Rechtsklik op een bestaande Scope > <strong>Configure Failover</strong>.</li>
                 <li>Vink <em>Select all</em> aan > <em>Next</em>.</li>
                 <li>Voer het IP of de naam in van je partner server (bijv. <code>T-DHCP-02</code>) > <em>Next</em>.</li>
-                <li>Kies de Mode: <strong>Hot Standby</strong> (1 actief, 1 reserve) of <strong>Load Balance</strong> (beide actief delen het werk).</li>
+                <li>Kies de Mode: <strong>Hot Standby</strong> of <strong>Load Balance</strong>.</li>
                 <li>Vink <em>State Switchover Interval</em> aan (bijv. 1 minuut) > <em>Next</em> > <em>Finish</em>.</li>
             </ol>
 
             <h3>Storage Pools & Spaces (GUI)</h3>
             <ol>
                 <li>Server Manager > <em>File and Storage Services</em> > <em>Volumes</em> > <em>Storage Pools</em>.</li>
-                <li>Rechtsklik rechtsboven in de lege ruimte (bij Primordial) > <strong>New Storage Pool</strong> > Geef een naam > Vink de lege, fysieke schijven aan.</li>
-                <li>Rechtsklik op de nieuwe pool > <strong>New Virtual Disk</strong> > Kies <em>Mirror</em> of <em>Parity</em> > Kies <em>Thin</em> of <em>Fixed</em> provisioning.</li>
+                <li>Rechtsklik rechtsboven in de lege ruimte (bij Primordial) > <strong>New Storage Pool</strong>.</li>
+                <li>Rechtsklik op de nieuwe pool > <strong>New Virtual Disk</strong> (Kies Mirror of Parity).</li>
                 <li>Doorloop de volume-wizard om een schijfletter en NTFS/ReFS in te stellen.</li>
             </ol>
         </section>
 
         <section id="plf10">
-            <h1>🟠 PLF10: Group Policies (GPO)</h1>
-
-            <h3>Central Store Aanmaken (GUI)</h3>
+            <h1>🟠 PLF10: Group Policies (GUI)</h1>
+            <h3>Central Store Aanmaken</h3>
             <ol>
-                <li>Open de Verkenner (Win + E).</li>
                 <li>Kopieer de map: <code>C:\Windows\PolicyDefinitions</code></li>
                 <li>Plak deze in de SYSVOL share: <code>\\JOUWDOMEIN.local\SYSVOL\JOUWDOMEIN.local\Policies\</code></li>
             </ol>
 
             <h3>Folder Redirection (GUI)</h3>
             <ol>
-                <li>Maak een map op je fileserver (bijv. <code>C:\Shares\Profiles</code>). Deel deze (Share: <em>Everyone = Full Control</em>. NTFS: <em>Creator Owner = Full Control</em>, <em>Authenticated Users = Read/Write/Execute</em>).</li>
-                <li>Open <code>gpmc.msc</code> > Maak/Edit een GPO gelinkt aan de OU met <strong>Users</strong>.</li>
+                <li>Maak een map op je fileserver (deel deze met Everyone Full Control).</li>
+                <li>Open <code>gpmc.msc</code> > Edit een GPO gelinkt aan de OU met <strong>Users</strong>.</li>
                 <li><em>User Configuration</em> > <em>Policies</em> > <em>Windows Settings</em> > <em>Folder Redirection</em>.</li>
-                <li>Rechtsklik op <em>Documents</em> > <em>Properties</em>.</li>
-                <li>Setting: <strong>Basic</strong> > Root Path: <code>\\SERVERNAAM\Profiles</code>.</li>
+                <li>Rechtsklik op <em>Documents</em> > <em>Properties</em> > Setting: <strong>Basic</strong> > Root Path: <code>\\SERVERNAAM\Profiles</code>.</li>
             </ol>
 
             <h3>Loopback Processing (Kiosk Mode)</h3>
             <ol>
                 <li>Link de GPO aan de OU waar de <strong>Computers</strong> in zitten.</li>
                 <li>Edit GPO: <em>Computer Configuration</em> > <em>Policies</em> > <em>Administrative Templates</em> > <em>System</em> > <em>Group Policy</em>.</li>
-                <li>Zet <strong>Configure user Group Policy loopback processing mode</strong> op <em>Enabled</em>.</li>
-                <li>Kies <strong>Replace</strong> of <strong>Merge</strong>.</li>
+                <li>Zet <strong>Configure user Group Policy loopback processing mode</strong> op <em>Enabled</em> > Kies <strong>Replace</strong>.</li>
             </ol>
         </section>
 
         <section id="plf11">
-            <h1>🔴 PLF11: Windows Beveiliging & PKI</h1>
-
+            <h1>🔴 PLF11: Windows Beveiliging & PKI (GUI)</h1>
             <h3>Enterprise CA (Certificate Authority)</h3>
             <ol>
-                <li><strong>Installatie:</strong> Server Manager > Add Roles > <em>Active Directory Certificate Services</em>.</li>
-                <li><strong>Configuratie:</strong> Kies <em>Enterprise CA</em> > <em>Root CA</em> > <em>Create a new private key</em>.</li>
-                <li><strong>Template dupliceren:</strong> <em>Tools</em> > <em>Certification Authority</em>. Rechtsklik <em>Certificate Templates</em> > <em>Manage</em>.</li>
-                <li>Rechtsklik op <em>User</em> (of <em>Computer</em>) > <strong>Duplicate Template</strong>. Geef het een naam.</li>
-                <li>Tabblad <em>Security</em>: Voeg <em>Domain Users</em>/<em>Computers</em> toe. Vink aan: <strong>Read</strong>, <strong>Enroll</strong>, én <strong>Autoenroll</strong>.</li>
-                <li>In de CA-console: Rechtsklik <em>Certificate Templates</em> > <em>New</em> > <em>Certificate Template to Issue</em> > Selecteer je nieuwe template.</li>
+                <li><strong>Installatie:</strong> Server Manager > Add Roles > <em>Active Directory Certificate Services</em> (Enterprise CA / Root CA).</li>
+                <li><strong>Template dupliceren:</strong> <em>Tools</em> > <em>Certification Authority</em> > Rechtsklik <em>Certificate Templates</em> > <em>Manage</em>.</li>
+                <li>Duplicate een template, geef rechten bij <em>Security</em> voor de doelgroep: <strong>Read</strong>, **Enroll**, én **Autoenroll**.</li>
+                <li>In de CA-console: Rechtsklik <em>Certificate Templates</em> > <em>New</em> > <em>Certificate Template to Issue</em>.</li>
             </ol>
 
             <h3>Auto-enrollment via GPO</h3>
             <ol>
-                <li>Edit een GPO. <em>User Configuration</em> > <em>Policies</em> > <em>Windows Settings</em> > <em>Security Settings</em> > <em>Public Key Policies</em>.</li>
-                <li>Open <strong>Certificate Services Client - Auto-Enrollment</strong>.</li>
-                <li>Zet op <em>Enabled</em> en vink de twee onderste vakjes aan.</li>
-            </ol>
-
-            <h3>IPsec via Windows Firewall (GUI)</h3>
-            <ol>
-                <li>GPO > <em>Computer Configuration</em> > <em>Policies</em> > <em>Windows Settings</em> > <em>Security Settings</em> > <em>Windows Defender Firewall</em>.</li>
-                <li>Rechtsklik op <strong>Connection Security Rules</strong> > <em>New Rule</em>.</li>
-                <li>Kies <strong>Isolation</strong> > <em>Require authentication for inbound and outbound</em> > Kies <em>Computer and User (Kerberos V5)</em>.</li>
+                <li>Edit GPO: <em>User Configuration</em> > <em>Policies</em> > <em>Windows Settings</em> > <em>Security Settings</em> > <em>Public Key Policies</em>.</li>
+                <li>Open <strong>Certificate Services Client - Auto-Enrollment</strong> > Zet op <em>Enabled</em> en vink de vakjes aan.</li>
             </ol>
         </section>
 
         <section id="plf12">
-            <h1>🟣 PLF12: VPN & Beveiliging</h1>
-
-            <h3>RRAS VPN (SSTP & L2TP) (GUI)</h3>
+            <h1>🟣 PLF12: VPN & Beveiliging (GUI)</h1>
+            <h3>RRAS VPN (SSTP & L2TP)</h3>
             <ol>
-                <li><strong>SSTP Certificaat:</strong> Vraag een "Computer" certificaat aan op je VPN-server via <code>certlm.msc</code>.</li>
-                <li><strong>IIS Binding:</strong> Open <em>IIS Manager</em> > <em>Default Web Site</em> > <em>Bindings</em> > Voeg <strong>HTTPS</strong> (poort 443) toe > Selecteer het certificaat.</li>
-                <li><strong>L2TP Preshared Key:</strong> In RRAS > Rechtsklik server > <em>Properties</em> > Tabblad <em>Security</em> > Vink <em>Allow custom IPsec policy for L2TP/IKEv2</em> aan en voer de sleutel in.</li>
+                <li><strong>SSTP Certificaat:</strong> Vraag een Computer certificaat aan via <code>certlm.msc</code>.</li>
+                <li><strong>IIS Binding:</strong> Open <em>IIS Manager</em> > <em>Default Web Site</em> > <em>Bindings</em> > Voeg <strong>HTTPS</strong> toe op poort 443 en selecteer het certificaat.</li>
+                <li><strong>L2TP Preshared Key:</strong> In RRAS > Rechtsklik server > <em>Properties</em> > Tabblad <em>Security</em> > Vink <em>Allow custom IPsec policy</em> aan en typ de sleutel.</li>
             </ol>
 
             <h3>NPS (Network Policy Server) Instellen</h3>
             <ol>
-                <li><em>Tools</em> > <em>Network Policy Server</em> (<code>nps.msc</code>).</li>
-                <li><em>Policies</em> > <em>Network Policies</em> > Rechtsklik > <em>New</em>.</li>
-                <li>Naam: "VPN Toegang".</li>
-                <li><strong>Conditions:</strong> Voeg je Active Directory VPN-groep toe.</li>
-                <li><strong>Access Permission:</strong> <em>Access granted</em>.</li>
-                <li><strong>Authentication Methods:</strong> Vink <strong>MS-CHAP-v2</strong> aan. Zorg dat deze policy bovenaan staat!</li>
+                <li><em>Tools</em> > <em>Network Policy Server</em> > <em>Policies</em> > <em>Network Policies</em> > <em>New</em>.</li>
+                <li><strong>Conditions:</strong> Voeg de Active Directory Windows Group van je VPN-gebruikers toe.</li>
+                <li><strong>Constraints:</strong> Vink **MS-CHAP-v2** aan. Zorg dat de policy helemaal bovenaan staat.</li>
             </ol>
+        </section>
 
-            <h3>WireGuard (Linux CLI)</h3>
-<pre><code># Genereer keys
-wg genkey | tee privatekey | wg pubkey > publickey
 
-# Maak de interface aan (nano /etc/wireguard/wg0.conf)
-[Interface]
-Address = 10.0.0.1/24
-ListenPort = 51820
-PrivateKey = &lt;jouw_private_key_hier&gt;
+        <section id="ps-plf08" class="ps-section">
+            <h1>🟦 PLF08: Routing & NAT via PowerShell</h1>
+            <h3>RRAS & NAT Configureren</h3>
+            <p>Gebruik deze commando's op een Windows Server Core machine of om razendsnel te configureren zonder te hoeven klikken.</p>
+<pre class="powershell"><code><span class="ps-comment"># 1. Installeer de Routing en Remote Access module</span>
+Install-WindowsFeature Remote-Access -IncludeManagementTools
+Install-WindowsFeature Routing -IncludeManagementTools
 
-[Peer]
-PublicKey = &lt;public_key_van_client&gt;
-AllowedIPs = 10.0.0.2/32
+<span class="ps-comment"># 2. Installeer Routing / NAT service (Vereist reboot van de service)</span>
+Install-RemoteAccess -RoutingOnly
+Update-FileServerResourceManagementWallClock <span class="ps-comment"># Optioneel voor tijd-sync</span>
 
-# Start en enable Wireguard
-systemctl enable --now wg-quick@wg0</code></pre>
+<span class="ps-comment"># 3. NAT configureren op de externe interface (vervang "Ethernet0" door jouw WAN kaart naam)</span>
+New-NetNat -Name "ToetsNAT" -InternalIPInterfaceAddressPrefix "192.168.10.0/24"</code></pre>
+        </section>
+
+        <section id="ps-plf09" class="ps-section">
+            <h1>🟦 PLF09: AD Sites & DHCP Failover via PowerShell</h1>
+            <h3>Active Directory Sites & Subnets</h3>
+<pre class="powershell"><code><span class="ps-comment"># Nieuwe site aanmaken</span>
+New-ADReplicationSite -Name "Groningen-Site"
+
+<span class="ps-comment"># Subnet aanmaken en direct koppelen aan de Site</span>
+New-ADReplicationSubnet -Name "192.168.20.0/24" -Site "Groningen-Site"
+
+<span class="ps-comment"># Server verplaatsen naar de nieuwe site</span>
+Move-ADDirectoryServer -Identity "T-DC-02" -TargetSite "Groningen-Site"</code></pre>
+
+            <h3>DHCP Failover configureren</h3>
+            <p>Configureer een hot-standby of load-balance DHCP relatie tussen je main server en bijvoorbeeld <code>T-DHCP-02</code>.</p>
+<pre class="powershell"><code><span class="ps-comment"># Failover relatie aanmaken (Hot Standby mode)</span>
+Add-DhcpServerv4Failover -Name "Main-to-Backup" -ScopeId 192.168.10.0 -PartnerServer "T-DHCP-02.jouwdomein.local" -ServerRole Standby -ReservePercent 5 -MaxClientLeadTime 00:10:00 -AutoStateTransition $true -StateSwitchoverInterval 00:01:00 -SharedSecret "MijnGeheimWachtwoord123!"</code></pre>
+        </section>
+
+        <section id="ps-plf10" class="ps-section">
+            <h1>🟦 PLF10: Group Policies via PowerShell</h1>
+            <h3>GPO Aanmaken en Linken</h3>
+<pre class="powershell"><code><span class="ps-comment"># Nieuwe GPO aanmaken</span>
+New-GPO -Name "Kiosk_Restrictions" -Comment "Beveiliging voor openbare PC's"
+
+<span class="ps-comment"># GPO linken aan een specifieke OU</span>
+New-GPLink -Name "Kiosk_Restrictions" -Target "OU=Kiosks,OU=Bedrijf,DC=jouwdomein,DC=local"
+
+<span class="ps-comment"># GPO Link op "Enforced" zetten</span>
+Set-GPLink -Name "Kiosk_Restrictions" -Target "OU=Kiosks,OU=Bedrijf,DC=jouwdomein,DC=local" -Enforced Yes</code></pre>
+        </section>
+
+        <section id="ps-plf11" class="ps-section">
+            <h1>🟦 PLF11: Firewall & IPsec via PowerShell</h1>
+            <h3>IPsec Isolatieregel aanmaken</h3>
+            <p>Verplicht Kerberos v5 authenticatie voor alle inkomende en uitgaande verbindingen.</p>
+<pre class="powershell"><code><span class="ps-comment"># Maak een nieuwe IPsec / Connection Security Rule aan</span>
+New-NetInboundDiagTrackConnectionSecurityRule -DisplayName "Domain Isolation Rule" -Endpoint1 Any -Endpoint2 Any -AuthenticationMethod ComputerKerberos -InboundSecurity Require -OutboundSecurity Request</code></pre>
+        </section>
+
+        <section id="ps-plf12" class="ps-section">
+            <h1>🟦 PLF12: VPN & NPS via PowerShell</h1>
+            <h3>L2TP Pre-Shared Key instellen op de RRAS gateway</h3>
+<pre class="powershell"><code><span class="ps-comment"># Stel de IPsec Pre-Shared Key in voor L2TP VPN verbindingen</span>
+Set-VpnAuthProtocol -TunnelAuthProtocols L2TP -SharedSecret "Welkom01!" -UserAuthProtocolsEap MSCHAPv2</code></pre>
+
+            <h3>NPS Network Policy exporteren en importeren</h3>
+            <p>Als je je NPS instellingen snel wilt backuppen of verplaatsen naar een andere server:</p>
+<pre class="powershell"><code><span class="ps-comment"># Exporteer de volledige NPS configuratie naar een XML bestand</span>
+Export-NpsConfiguration -Path "C:\NpsConfig.xml"
+
+<span class="ps-comment"># Importeer de configuratie op de nieuwe server</span>
+Import-NpsConfiguration -Path "C:\NpsConfig.xml"</code></pre>
         </section>
     </main>
 
