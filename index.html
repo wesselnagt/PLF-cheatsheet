@@ -3,534 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PLF Infrastructure Fundamentals - Volledige Toetsgids</title>
+    <title>PLF Praktijktoets - Klik-voor-Klik Gids</title>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --bg: #f8fafc;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --bg: #f1f5f9;
             --card-bg: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-            --code-bg: #0f172a;
+            --text: #0f172a;
+            --text-light: #475569;
+            --border: #cbd5e1;
+            --code-bg: #1e293b;
             --code-text: #f8fafc;
-            --accent: #e11d48;
-            --success: #16a34a;
+            --highlight: #fef08a;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            display: flex;
-        }
+        body { background-color: var(--bg); color: var(--text); line-height: 1.6; display: flex; }
 
-        /* Sidebar Navigatie */
-        nav {
-            width: 300px;
-            background-color: #111827;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            overflow-y: auto;
-            padding: 20px 10px;
-            color: #fff;
-            border-right: 1px solid #1f2937;
-        }
+        /* Navigatie */
+        nav { width: 320px; background-color: #0f172a; height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; padding: 20px 10px; color: #fff; border-right: 4px solid var(--primary); }
+        nav h1 { font-size: 1.3rem; padding: 10px; margin-bottom: 15px; border-bottom: 2px solid #334155; text-align: center; color: #38bdf8; }
+        nav h2 { font-size: 0.85rem; text-transform: uppercase; color: #94a3b8; padding: 10px; margin-top: 10px; }
+        nav ul { list-style: none; }
+        nav a { display: block; color: #e2e8f0; text-decoration: none; padding: 12px; border-radius: 6px; font-size: 0.95rem; margin-bottom: 4px; transition: background 0.2s; }
+        nav a:hover { background-color: #1e293b; }
+        nav a.active { background-color: var(--primary); color: #fff; font-weight: bold; border-left: 4px solid #38bdf8; }
 
-        nav h1 {
-            font-size: 1.2rem;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #374151;
-            text-align: center;
-            color: #3b82f6;
-        }
+        /* Main Content */
+        main { margin-left: 320px; padding: 40px; width: calc(100% - 320px); max-width: 1400px; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        nav h2 {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #9ca3af;
-            padding: 10px 10px 5px 10px;
-            margin-top: 15px;
-        }
+        h2.section-title { font-size: 2.2rem; color: #0f172a; border-bottom: 4px solid var(--primary); padding-bottom: 10px; margin-bottom: 5px; }
+        .subtitle { color: var(--text-light); font-size: 1.1rem; margin-bottom: 30px; font-weight: 500; }
 
-        nav ul {
-            list-style: none;
-        }
-
-        nav a {
-            display: block;
-            color: #d1d5db;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-        }
-
-        nav a:hover {
-            background-color: #1f2937;
-            color: #fff;
-        }
-
-        nav a.active {
-            background-color: var(--primary);
-            color: #fff;
-            font-weight: bold;
-        }
-
-        /* Main Content Area */
-        main {
-            margin-left: 300px;
-            padding: 40px;
-            width: calc(100% - 300px);
-            max-width: 1300px;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        h2.section-title {
-            font-size: 2rem;
-            color: #0f172a;
-            margin-bottom: 5px;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 10px;
-        }
-
-        .subtitle {
-            color: var(--text-light);
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
-        /* Card styles */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-        }
-
-        .card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: #1e293b;
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-        }
-
-        /* Lists */
-        ol, ul {
-            padding-left: 25px;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        li strong {
-            color: #0f172a;
-        }
-
-        .inner-step {
-            list-style-type: lower-alpha;
-            padding-left: 20px;
-            margin-top: 5px;
-        }
+        /* Kaarten en Stappen */
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .card h3 { font-size: 1.5rem; margin-bottom: 20px; color: #1e293b; display: flex; align-items: center; gap: 10px; background-color: #e0f2fe; padding: 10px 15px; border-radius: 6px; }
+        
+        ol.step-list { list-style: none; counter-reset: my-awesome-counter; padding-left: 10px; }
+        ol.step-list > li { counter-increment: my-awesome-counter; margin-bottom: 15px; position: relative; padding-left: 40px; font-size: 1.05rem; }
+        ol.step-list > li::before { content: counter(my-awesome-counter); background: var(--primary); color: white; font-weight: bold; position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        
+        .gui-path { background-color: #f1f5f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #cbd5e1; font-weight: 600; font-size: 0.95em; color: #334155; }
+        strong { color: #000; }
+        .server-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; color: white; margin-bottom: 10px; text-transform: uppercase; }
+        .badge-rras { background-color: #d97706; }
+        .badge-core { background-color: #4f46e5; }
+        .badge-dc { background-color: #059669; }
+        .badge-linux { background-color: #db2777; }
 
         /* Code Blocks */
-        pre {
-            background-color: var(--code-bg);
-            color: var(--code-text);
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-        }
+        pre { background-color: var(--code-bg); color: var(--code-text); padding: 15px; border-radius: 6px; overflow-x: auto; margin: 10px 0 20px 0; font-family: Consolas, monospace; font-size: 0.95rem; border-left: 5px solid #38bdf8; }
+        code { font-family: Consolas, monospace; background-color: #e2e8f0; color: #b91c1c; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        pre code { background-color: transparent; color: inherit; padding: 0; font-weight: normal; }
 
-        .code-lang {
-            position: absolute;
-            top: 2px;
-            right: 8px;
-            font-size: 0.7rem;
-            color: #64748b;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #f1f5f9;
-            color: #b91c1c;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-
-        pre code {
-            background-color: transparent;
-            color: inherit;
-            padding: 0;
-        }
-
-        /* Alerts & Badges */
-        .alert {
-            background-color: #fef2f2;
-            border-left: 4px solid var(--accent);
-            color: #991b1b;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            font-size: 0.95rem;
-        }
-
-        .tip {
-            background-color: #eff6ff;
-            border-left: 4px solid var(--primary);
-            color: #1e40af;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            font-size: 0.95rem;
-        }
-
-        .check {
-            background-color: #f0fdf4;
-            border-left: 4px solid var(--success);
-            color: #166534;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            font-size: 0.95rem;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        table th, table td {
-            border: 1px solid var(--border);
-            padding: 12px;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        table th {
-            background-color: #f1f5f9;
-            color: #0f172a;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            nav { width: 100%; height: auto; position: relative; }
-            main { margin-left: 0; width: 100%; padding: 20px; }
-        }
+        /* Alerts */
+        .alert { background-color: #fef2f2; border-left: 5px solid #ef4444; padding: 15px 20px; border-radius: 6px; margin: 20px 0; color: #991b1b; font-weight: 500; }
+        .check { background-color: #f0fdf4; border-left: 5px solid #22c55e; padding: 15px 20px; border-radius: 6px; margin: 20px 0; color: #166534; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <nav>
-        <h1>PLF Master CheatSheet 🛠️</h1>
+        <h1>Klik-voor-Klik Gids 🖱️</h1>
         
-        <h2>Weekopdrachten</h2>
+        <h2>Direct naar de Toetsen</h2>
         <ul>
-            <li><a href="#" class="nav-link active" onclick="showSection('week08')">PLF08: Windows Routing & NAT</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('week09')">PLF09: Sites & Replication</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('week10')">PLF10: Group Policies (GPO)</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('week11')">PLF11: Systeembeveiliging & AD-CS</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('week12')">PLF12: Linux OpenVPN-netwerk</a></li>
+            <li><a href="#" class="nav-link active" onclick="showSection('toetsE')">🔴 TOETS E (RRAS + GPO)</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('toetsF')">🔴 TOETS F (VPN + Sites)</a></li>
         </ul>
 
-        <h2>Voorbeeldtoetsen (Compleet)</h2>
+        <h2>Deelopdrachten (Naslagwerk)</h2>
         <ul>
-            <li><a href="#" class="nav-link" onclick="showSection('toetsE')">Toets E: RRAS + GPO</a></li>
-            <li><a href="#" class="nav-link" onclick="showSection('toetsF')">Toets F: VPN + Replication</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('week08')">PLF08: NAT Routing maken</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('week09')">PLF09: AD Sites & Replicatie</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('week10')">PLF10: Group Policies (GPO)</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('week11')">PLF11: CA Certificaten</a></li>
+            <li><a href="#" class="nav-link" onclick="showSection('week12')">PLF12: OpenVPN Installeren</a></li>
         </ul>
     </nav>
 
     <main>
-        <div id="week08" class="section active">
-            <h2 class="section-title">PLF08: Windows Server Routing & NAT</h2>
-            <p class="subtitle">Volledige stappen voor het transformeren van Windows Server naar een functionele NAT-router.</p>
-            
+
+        <div id="toetsE" class="section active">
+            <h2 class="section-title">Overlevingsgids: Voorbeeldtoets E</h2>
+            <p class="subtitle">Focus: Routing (NAT) opzetten en Group Policies beveiligen.</p>
+            <div class="alert">Zorg dat al je 3 virtuele machines aan staan: DC1, je GUI-server (wordt RRAS1) en je Core-server (wordt Core1).</div>
+
             <div class="card">
-                <h3>Stap 1: Netwerkkaarten Identificeren en Configureren</h3>
-                <p>Open PowerShell op de router-VM om de exacte namen van je netwerkkaarten te achterhalen:</p>
-                <pre><span class="code-lang">powershell</span>Get-NetAdapter</pre>
-                <p>Configureer de interfaces statisch volgens de criteria van de opdracht:</p>
-                <pre><span class="code-lang">powershell</span># Interface richting Core-netwerk (VMnet2)
+                <h3>Deel 1: Netwerkkaarten in VMware instellen</h3>
+                <ol class="step-list">
+                    <li>Klik in VMware bovenin op de tab van je <strong>GUI-server (RRAS1)</strong>.</li>
+                    <li>Klik op <span class="gui-path">VM</span> > <span class="gui-path">Settings</span>.</li>
+                    <li>Zorg dat je in totaal <strong>DRIE (3)</strong> Network Adapters hebt. Klik eventueel op <span class="gui-path">Add...</span> > <strong>Network Adapter</strong> > <span class="gui-path">Finish</span> als je er tekort komt.</li>
+                    <li>Stel ze exact zo in:
+                        <br>- Network Adapter 1: Selecteer <strong>Custom: VMnet0</strong> (Dit is de koppeling naar DC1).
+                        <br>- Network Adapter 2: Selecteer <strong>Custom: VMnet2</strong> (Dit is de koppeling naar Core1).
+                        <br>- Network Adapter 3: Selecteer <strong>Custom: VMnet8 (NAT)</strong> (Dit is het internet).
+                    </li>
+                    <li>Klik op <span class="gui-path">OK</span>.</li>
+                    <li>Ga in VMware naar de tab van je <strong>Core-server (Core1)</strong>. Klik op <span class="gui-path">VM</span> > <span class="gui-path">Settings</span>.</li>
+                    <li>Zorg dat deze <strong>ÉÉN (1)</strong> Network Adapter heeft. Stel deze in op <strong>Custom: VMnet2</strong>. Klik op <span class="gui-path">OK</span>.</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h3>Deel 2: IP-adressen uitdelen en Ping aanzetten</h3>
+                <span class="server-badge badge-core">SERVER: CORE1</span>
+                <ol class="step-list">
+                    <li>Log in op <strong>Core1</strong>. Het zwarte CMD-scherm opent.</li>
+                    <li>Typ <code>sconfig</code> en druk op <strong>Enter</strong>.</li>
+                    <li>Typ <code>2</code> (Computer Name) en druk op <strong>Enter</strong>. Typ de naam <code>Core1</code> en druk op <strong>Enter</strong>. Hij vraagt om een herstart, klik <strong>Yes</strong>.</li>
+                    <li>Na herstart log je weer in en typ je weer <code>sconfig</code>.</li>
+                    <li>Typ <code>4</code> (Configure Remote Management) > Typ <code>3</code> (Configure Server Response to Ping) > Klik <strong>Yes</strong> in de pop-up. (Ping is nu aan).</li>
+                    <li>Typ <code>4</code> (Return to main menu).</li>
+                    <li>Typ <code>8</code> (Network Settings) en druk op <strong>Enter</strong>.</li>
+                    <li>Kies het getal van je netwerkkaart (meestal <code>1</code>) en druk op <strong>Enter</strong>.</li>
+                    <li>Typ <code>1</code> (Set Network Adapter Address) > Typ <code>S</code> (Static) > Typ als IP <code>172.19.19.2</code> > Typ als Subnetmasker <code>255.255.255.0</code> > Typ als Default Gateway <code>172.19.19.1</code>.</li>
+                    <li>Typ <code>2</code> (Set DNS Servers) > Typ <code>192.168.1.1</code> > Druk op <strong>Enter</strong>.</li>
+                </ol>
+
+                <span class="server-badge badge-rras">SERVER: RRAS1 (GUI)</span>
+                <ol class="step-list">
+                    <li>Log in op <strong>RRAS1</strong>. Druk op de <strong>Windows-toets</strong>, typ <code>PowerShell</code> en druk op <strong>Enter</strong>.</li>
+                    <li>Kopieer, plak en voer deze commando's één voor één uit om de IP-adressen goed te zetten:</li>
+                    <pre><span class="code-lang">powershell</span># Interface naar Core1 instellen:
 New-NetIPAddress -InterfaceAlias "Ethernet 1" -IPAddress 172.19.19.1 -PrefixLength 24
 
-# Interface richting interne Active Directory (VMnet0)
+# Interface naar de Domain Controller (DC1) instellen:
 New-NetIPAddress -InterfaceAlias "Ethernet 0" -IPAddress 192.168.1.10 -PrefixLength 24</pre>
-                <div class="tip">Laat de netwerkkaart die gekoppeld is aan <strong>VMnet8 (NAT)</strong> altijd op DHCP staan! Dit controleer je met: `Get-NetIPAddress -InterfaceAlias "VMnet8"`</div>
-            </div>
-
-            <div class="card">
-                <h3>Stap 2: RRAS Rol en NAT Routering Installeren</h3>
-                <ol>
-                    <li>Open <strong>Server Manager</strong>, klik op <strong>Add Roles and Features</strong>.</li>
-                    <li>Klik door tot <em>Server Roles</em> en vink <strong>Remote Access</strong> aan.</li>
-                    <li>Vink bij <em>Role Services</em> de opties <strong>DirectAccess and VPN (RAS)</strong> en <strong>Routing</strong> aan. Voltooi de installatie.</li>
-                    <li>Open de console via: <code>Start -> Administrative Tools -> Routing and Remote Access</code> (of typ <code>rrasmgmt.msc</code>).</li>
-                    <li>Rechtermuisknop op je servernaam -> <strong>Configure and Enable Routing and Remote Access</strong>.</li>
-                    <li>Kies in de wizard voor <strong>Network Address Translation (NAT)</strong>.</li>
-                    <li>Selecteer de netwerkinterface die met het internet is verbonden (de DHCP/VMnet8 interface) en klik op Voltooien.</li>
                 </ol>
             </div>
 
             <div class="card">
-                <h3>Stap 3: Interfaces Handmatig Toevoegen aan NAT (Indien leeg)</h3>
-                <p>Mocht de wizard mislukken of de tabel leeg blijven, voeg de interfaces dan handmatig toe in de console:</p>
-                <ol>
-                    <li>Vouw uit: <code>Server -> IPv4 -> NAT</code>.</li>
-                    <li>Rechtermuisknop op <strong>NAT</strong> -> <strong>New Interface...</strong>.</li>
-                    <li>Selecteer je internetkaart (VMnet8): kies <strong>Public interface connected to the Internet</strong> + vink <strong>Enable NAT on this interface</strong> aan.</li>
-                    <li>Rechtermuisknop op <strong>NAT</strong> -> <strong>New Interface...</strong>.</li>
-                    <li>Selecteer je LAN-interface (VMnet2): kies <strong>Private interface connected to private network</strong>.</li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Stap 4: Gateway Strijd Oplossen (Metric Aanpassen)</h3>
-                <div class="alert"><strong>CRITIEK SYMPTOOM:</strong> Kan de router zelf wel op internet via Edge, maar mislukt `ping 8.8.8.8` vanaf Core1? Dan gebruikt Windows de verkeerde hoofdroute. Voer dit uit op de Router:</div>
-                <pre><span class="code-lang">powershell</span># Dwing internetkaart naar de hoogste prioriteit
-Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5
-
-# Zet de interne kaarten op een hele lage prioriteit voor internet
+                <h3>Deel 3: Router & NAT Installeren op RRAS1</h3>
+                <span class="server-badge badge-rras">SERVER: RRAS1 (GUI)</span>
+                <ol class="step-list">
+                    <li>Open <strong>Server Manager</strong>. Klik rechtsboven op <span class="gui-path">Manage</span> > <span class="gui-path">Add Roles and Features</span>.</li>
+                    <li>Klik 3x op <span class="gui-path">Next</span> tot je bij 'Server Roles' bent.</li>
+                    <li>Vink <strong>Remote Access</strong> aan. Klik 3x op <span class="gui-path">Next</span> tot je bij 'Role Services' bent.</li>
+                    <li>Vink <strong>DirectAccess and VPN (RAS)</strong> aan (Klik 'Add Features' in de pop-up).</li>
+                    <li>Vink <strong>Routing</strong> aan. Klik op <span class="gui-path">Next</span> en daarna op <span class="gui-path">Install</span>. Wacht tot de balk vol is en klik <span class="gui-path">Close</span>.</li>
+                    <li>Druk op de <strong>Windows-toets</strong>, typ <code>rrasmgmt.msc</code> en druk op <strong>Enter</strong>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de naam van je server (met het rode pijltje) en klik op <strong>Configure and Enable Routing and Remote Access</strong>.</li>
+                    <li>Klik <span class="gui-path">Next</span>. Selecteer <strong>Network address translation (NAT)</strong> en klik <span class="gui-path">Next</span>.</li>
+                    <li>Selecteer de netwerkkaart in de lijst die het IP-adres van VMware heeft gekregen (meestal degene met een IP dat begint met 192.168.91.x, dit is VMnet8). Klik <span class="gui-path">Next</span> en dan <span class="gui-path">Finish</span>.</li>
+                    <li><strong>LET OP: FIX HET GATEWAY CONFLICT!</strong> Open PowerShell op RRAS1 en kopieer/plak dit om te zorgen dat het internet altijd voorrang krijgt:</li>
+                    <pre><span class="code-lang">powershell</span>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5
 Set-NetIPInterface -InterfaceAlias "Ethernet 0" -InterfaceMetric 80
 Set-NetIPInterface -InterfaceAlias "Ethernet 1" -InterfaceMetric 80</pre>
-            </div>
-        </div>
-
-        <div id="week09" class="section">
-            <h2 class="section-title">PLF09: Active Directory Sites & Replication</h2>
-            <p class="subtitle">Het fysiek scheiden van netwerksegmenten binnen AD en het configureren van replicatietijden.</p>
-
-            <div class="card">
-                <h3>Stap 1: Core Server Promoveren tot Domain Controller</h3>
-                <p>Voer dit uit in PowerShell op de Windows Core-server om Active Directory services te installeren:</p>
-                <pre><span class="code-lang">powershell</span>Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools</pre>
-                <p>Promoveer de core-server nu tot een extra DC binnen je bestaande domein:</p>
-                <pre><span class="code-lang">powershell</span>Install-ADDSDomainController -DomainName "school.test" -Credential (Get-Credential)</pre>
-                <div class="tip">Geef bij de pop-up de gegevens van de Administrator van je domein op (bijv. `school\Administrator`). Het systeem zal automatisch herstarten.</div>
+                </ol>
+                <div class="check"><strong>TESTMOMENT (PLF08 KLAAR):</strong> Ga naar de zwarte box van <strong>Core1</strong>. Typ <code>ping 8.8.8.8</code>. Werkt dit? Gefeliciteerd, je routering is perfect!</div>
             </div>
 
             <div class="card">
-                <h3>Stap 2: Sites en Subnets Aanmaken</h3>
-                <p>Open op de hoofd-DC de console <strong>Active Directory Sites and Services</strong> (<code>dssite.msc</code>):</p>
-                <ol>
-                    <li>Rechtermuisknop op de map <strong>Sites</strong> -> <strong>New Site</strong>.
-                        <ul class="inner-step">
-                            <li>Naam 1: <code>Leeuwarden</code>. Selecteer <strong>DEFAULTIPSITELINK</strong> en klik OK.</li>
-                            <li>Naam 2: <code>Groningen</code>. Selecteer <strong>DEFAULTIPSITELINK</strong> en klik OK.</li>
-                        </ul>
-                    </li>
-                    <li>Rechtermuisknop op de map <strong>Subnets</strong> -> <strong>New Subnet</strong>.
-                        <ul class="inner-step">
-                            <li>Prefix: <code>192.168.1.0/24</code>. Selecteer site <strong>Leeuwarden</strong>.</li>
-                            <li>Prefix: <code>172.19.19.0/24</code>. Selecteer site <strong>Groningen</strong>.</li>
-                        </ul>
-                    </li>
-                    <li>Vouw <em>Sites -> Default-First-Site-Name -> Servers</em> open. 
-                        <ul class="inner-step">
-                            <li>Sleep je hoofd-DC naar <strong>Leeuwarden -> Servers</strong>.</li>
-                            <li>Sleep je Core-DC naar <strong>Groningen -> Servers</strong>.</li>
-                        </ul>
-                    </li>
+                <h3>Deel 4: Group Policies (GPO) configureren op DC1</h3>
+                <span class="server-badge badge-dc">SERVER: DC1</span>
+                <ol class="step-list">
+                    <li>Druk op de <strong>Windows-toets</strong>, typ <code>dsa.msc</code> (Active Directory Users and Computers) en druk op <strong>Enter</strong>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op je domeinnaam (bijv. <code>school.test</code>) > <span class="gui-path">New</span> > <strong>Organizational Unit</strong>. Typ <code>ToetsOU</code> en klik <span class="gui-path">OK</span>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de map <strong>ToetsOU</strong> > <span class="gui-path">New</span> > <strong>User</strong>. Typ als naam <code>bob</code>. Klik Next, typ als wachtwoord <code>Pa$$w0rd</code> en rond af.</li>
+                    <li>Sluit dit af. Druk weer op de <strong>Windows-toets</strong>, typ <code>gpmc.msc</code> (Group Policy Management) en druk op <strong>Enter</strong>.</li>
+                    <li>Vouw de mapjes open: <span class="gui-path">Forest</span> > <span class="gui-path">Domains</span> > <span class="gui-path">school.test</span>.</li>
+                    <li><strong>DE WACHTWOORD POLICY:</strong> Klik met de <strong>rechtermuisknop</strong> op de map <strong>Group Policy Objects</strong> > <span class="gui-path">New</span>. Typ <code>wachtwoord</code> en klik OK.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de net gemaakte <code>wachtwoord</code> GPO en kies <strong>Edit</strong>.</li>
+                    <li>Navigeer exact hierheen: <span class="gui-path">Computer Configuration</span> > <span class="gui-path">Policies</span> > <span class="gui-path">Windows Settings</span> > <span class="gui-path">Security Settings</span> > <span class="gui-path">Account Policies</span> > <span class="gui-path">Password Policy</span>.</li>
+                    <li>Dubbelklik op <strong>Enforce password history</strong> > Zet vinkje bij 'Define' > vul in <code>3</code> > OK.</li>
+                    <li>Dubbelklik op <strong>Maximum password age</strong> > vul in <code>20</code> > OK.</li>
+                    <li>Dubbelklik op <strong>Minimum password length</strong> > vul in <code>10</code> > OK. Sluit de Editor af.</li>
+                    <li><strong>KOPPEL DE WACHTWOORD POLICY:</strong> Klik met de <strong>rechtermuisknop</strong> helemaal bovenaan op je domeinnaam (<code>school.test</code>) en kies <strong>Link an Existing GPO...</strong>. Selecteer <code>wachtwoord</code> en klik OK.</li>
+                    <li>Klik nu met de <strong>rechtermuisknop</strong> op de koppeling die net is verschenen en klik op <strong>Enforced</strong> (er verschijnt een slotje).</li>
+                    <li><strong>DE NORUN POLICY VOOR BOB:</strong> Maak weer een New GPO in Group Policy Objects genaamd <code>norun</code>. Rechtermuisknop > <strong>Edit</strong>.</li>
+                    <li>Navigeer exact hierheen: <span class="gui-path">User Configuration</span> > <span class="gui-path">Policies</span> > <span class="gui-path">Administrative Templates</span> > <span class="gui-path">System</span>.</li>
+                    <li>Dubbelklik op <strong>Prevent access to the command prompt</strong> > Klik het bolletje <strong>Enabled</strong> aan > Klik OK. Sluit de Editor.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de map <strong>ToetsOU</strong> (waar Bob in zit) > <strong>Link an Existing GPO...</strong> > Kies <code>norun</code> > OK.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op deze nieuwe koppeling en klik op <strong>Enforced</strong>.</li>
                 </ol>
             </div>
 
             <div class="card">
-                <h3>Stap 3: Sitelink Replicatieschema Aanpassen</h3>
-                <ol>
-                    <li>Navigeer naar <code>Sites -> Inter-Site Transports -> IP</code>.</li>
-                    <li>Rechtermuisknop op <strong>DEFAULTIPSITELINK</strong> (of maak een nieuwe via New Site Link) -> <strong>Properties</strong>.</li>
-                    <li>Pas de <strong>Replicate every</strong> aan naar het gevraagde aantal minuten (bijvoorbeeld: `30` minuten).</li>
-                    <li>Klik op <strong>Change Schedule</strong>. 
-                        <ul class="inner-step">
-                            <li>Selecteer de uren waarop replicatie <strong>verboden</strong> is en kies <em>Replication Not Available</em> (dit wordt wit).</li>
-                            <li>Selecteer de uren waarop replicatie <strong>toegestaan</strong> is (bijv. Ma-Vr 09:00-18:00) en kies <em>Replication Available</em> (dit wordt blauw).</li>
-                        </ul>
-                    </li>
-                </ol>
-                <p>Forceer synchronisatie en controleer de status via de opdrachtprompt:</p>
-                <pre><span class="code-lang">cmd</span>repadmin /syncall /AePdq
-repadmin /showrepl</pre>
-            </div>
-        </div>
-
-        <div id="week10" class="section">
-            <h2 class="section-title">PLF10: Windows Group Policies (GPO)</h2>
-            <p class="subtitle">Het configureren en afdwingen van security-instellingen en gebruikersrestricties via GPO.</p>
-
-            <div class="card">
-                <h3>Stap 1: Wachtwoord- en Accountbeleid Configureren</h3>
-                <div class="alert"><strong>BELANGRIJK:</strong> Een wachtwoord-policy werkt in een Active Directory domein ALLEEN als deze gekoppeld is aan de ROOT van het domein (of via de Default Domain Policy). Koppel je hem aan een OU, dan negeert Windows de instellingen!</div>
-                <ol>
-                    <li>Open <strong>Group Policy Management</strong> (<code>gpmc.msc</code>).</li>
-                    <li>Rechtermuisknop op <strong>Group Policy Objects</strong> -> <strong>New</strong>. Geef de naam <code>GPO_Wachtwoord</code>.</li>
-                    <li>Rechtermuisknop op de nieuwe GPO -> <strong>Edit</strong>.</li>
-                    <li>Navigeer naar: <code>Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Account Policies -> Password Policy</code>.</li>
-                    <li>Configureer de vereiste waarden:
-                        <ul class="inner-step">
-                            <li><strong>Enforce password history:</strong> Bijv. `3` passwords remembered.</li>
-                            <li><strong>Maximum password age:</strong> Bijv. `20` days.</li>
-                            <li><strong>Minimum password length:</strong> Bijv. `10` characters.</li>
-                        </ul>
-                    </li>
-                    <li>Sluit de editor. Rechtermuisknop op de root van je domein (bijv. <code>school.test</code>) -> <strong>Link an Existing GPO...</strong> en kies `GPO_Wachtwoord`.</li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Stap 2: Command Prompt & Run Blokkering voor Gebruikers</h3>
-                <ol>
-                    <li>Maak een nieuwe GPO aan genaamd <code>GPO_Restricties</code>.</li>
-                    <li>Rechtermuisknop -> <strong>Edit</strong>. Navigeer naar: <code>User Configuration -> Policies -> Administrative Templates -> System</code>.</li>
-                    <li>Dubbelklik op <strong>Prevent access to the command prompt</strong>. Zet deze op <strong>Enabled</strong>. 
-                        <ul class="inner-step">
-                            <li><em>Optie:</em> Zet "Disable the command prompt script processing also?" op **No** als scripts op de achtergrond nog wel moeten kunnen draaien.</li>
-                        </ul>
-                    </li>
-                    <li>Navigeer naar: <code>User Configuration -> Policies -> Administrative Templates -> Start Menu and Taskbar</code>.</li>
-                    <li>Dubbelklik op <strong>Remove Run menu from Start Menu</strong> en zet deze op <strong>Enabled</strong> (dit blokkeert de `Win + R` sneltoets).</li>
-                    <li>Koppel deze GPO aan de specifieke <strong>Organizational Unit (OU)</strong> waar de doelgebruikers in zitten.</li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Stap 3: Handhaven (Enforce) & HTML Rapportage</h3>
-                <p>Om te zorgen dat lagere policies deze regels niet kunnen overschrijven:</p>
-                <ol>
-                    <li>Klik in Group Policy Management met de rechtermuisknop op de <strong>koppeling</strong> van de GPO onder je domeinnaam of OU.</li>
-                    <li>Klik op <strong>Enforced</strong>. Er verschijnt nu een hangslot-icoontje bij de GPO.</li>
-                </ol>
-                <p>Genereer het verplichte inspectierapport via PowerShell:</p>
-                <pre><span class="code-lang">powershell</span>Get-GPO -Name "GPO_Wachtwoord" | Get-GPOReport -ReportType HTML -Path C:\gpo_rapport.html</pre>
-            </div>
-        </div>
-
-        <div id="week11" class="section">
-            <h2 class="section-title">PLF11: Windows Systeembeveiliging & PKI</h2>
-            <p class="subtitle">Auditing inrichten en een certificaatautoriteit (Enterprise CA) opzetten in Windows Server.</p>
-
-            <div class="card">
-                <h3>Stap 1: Auditing (Gebeurtenisbewaking) configureren</h3>
-                <p>Om bij te houden wie inlogt of wijzigingen maakt, configureer je dit binnen een GPO:</p>
-                <ol>
-                    <li>Open de GPO editor en navigeer naar: <code>Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Local Policies -> Audit Policy</code>.</li>
-                    <li>Dubbelklik op de gewenste policy, bijvoorbeeld: <strong>Audit logon events</strong> of <strong>Audit account management</strong>.</li>
-                    <li>Vink zowel <strong>Success</strong> (gelukt) als <strong>Failure</strong> (mislukt) aan.</li>
-                </ol>
-                <div class="check">De logs kun je achteraf op de doelcomputer live inzien via de <strong>Event Viewer (<code>eventvwr.msc</code>) -> Windows Logs -> Security</strong>.</div>
-            </div>
-
-            <div class="card">
-                <h3>Stap 2: Active Directory Certificate Services (AD-CS) Opzetten</h3>
-                <ol>
-                    <li>Open <strong>Server Manager -> Add Roles and Features</strong>.</li>
-                    <li>Selecteer bij de serverrollen: <strong>Active Directory Certificate Services</strong> en klik op Next.</li>
-                    <li>Vink bij Role Services aan: <strong>Certification Authority</strong>. Voltooi de installatie.</li>
-                    <li>Klik bovenin Server Manager op het gele waarschuwingsdriehoekje en kies <strong>Configure Active Directory Certificate Services...</strong>.</li>
-                    <li>Geloofsbrieven: Zorg dat je bent ingelogd als Enterprise Administrator.</li>
-                    <li>Selecteer <strong>Certification Authority</strong> -> Kies <strong>Enterprise CA</strong> (zodat het domein de CA automatisch vertrouwt).</li>
-                    <li>Kies <strong>Root CA</strong> -> <strong>Create a new private key</strong>.</li>
-                    <li>Laat de cryptografie op SHA256 staan en klik door tot de installatie voltooid is.</li>
+                <h3>Deel 5: Rapport genereren voor de docent</h3>
+                <span class="server-badge badge-dc">SERVER: DC1</span>
+                <ol class="step-list">
+                    <li>Open <strong>PowerShell</strong>.</li>
+                    <li>Kopieer en plak dit commando om de beoordelaar te bewijzen dat je GPO werkt:</li>
+                    <pre><span class="code-lang">powershell</span>Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path C:\report.html</pre>
+                    <li>Roep de docent, log ergens in als <code>bob</code> en laat zien dat CMD geblokkeerd is!</li>
                 </ol>
             </div>
         </div>
 
-        <div id="week12" class="section">
-            <h2 class="section-title">PLF12: OpenVPN op Rocky Linux</h2>
-            <p class="subtitle">Volledige commandolijst voor het opzetten van een beveiligde OpenVPN server-client verbinding.</p>
+        <div id="toetsF" class="section">
+            <h2 class="section-title">Overlevingsgids: Voorbeeldtoets F</h2>
+            <p class="subtitle">Focus: Linux OpenVPN Server-Client en Windows AD Sites Maken.</p>
 
             <div class="card">
-                <h3>Stap 1: Repositories Schoonmaken & Benodigdheden Installeren</h3>
-                <p>Voer deze commando's uit op **beide** Linux-machines (Server & Client) om installatiefouten te voorkomen:</p>
-                <pre><span class="code-lang">bash</span># Repositories herstellen naar de juiste baselines
-sudo rm -f /etc/yum.repos.d/Rocky-*
+                <h3>Deel 1: VMware & Linux Repositories Fixen</h3>
+                <ol class="step-list">
+                    <li>Open VMware. Zorg dat je DC1 aan staat. Start <strong>rocky1</strong> op. Laad <strong>rocky2</strong> in (File > Open) en start deze op.</li>
+                    <li>Koppel in VMware de netwerkkaarten:
+                        <br>- <strong>rocky1:</strong> Adapter 1 = <strong>Custom: VMnet0</strong> (naar DC1). Voeg een 2e Adapter toe en zet deze op <strong>Custom: VMnet8 (NAT)</strong>.
+                        <br>- <strong>rocky2:</strong> Heeft maar 1 adapter nodig. Zet deze op <strong>Custom: VMnet8 (NAT)</strong>.
+                    </li>
+                    <li>Log in op BEIDE Linux machines (gebruikersnaam <code>root</code> of jouw admin-account) en voer dit EXACT in op <strong>allebei</strong> de machines (Druk na elke regel op Enter):</li>
+                    <pre><span class="code-lang">bash</span>sudo rm -f /etc/yum.repos.d/Rocky-*
 sudo dnf reinstall rocky-repos -y
-
-# EPEL repository installeren (nodig voor OpenVPN)
 sudo dnf install epel-release -y
-
-# OpenVPN en Easy-RSA installeren
 sudo dnf install openvpn easy-rsa -y</pre>
+                    <li>Wacht tot hij klaar is (typ <code>y</code> en Enter als hij toestemming vraagt).</li>
+                </ol>
             </div>
 
             <div class="card">
-                <h3>Stap 2: De Certificate Authority (CA) Bouwen (Enkel op OpenVPN Server)</h3>
-                <pre><span class="code-lang">bash</span># Map aanmaken en initialiseren
-make-cadir ~/openvpn-ca
+                <h3>Deel 2: OpenVPN Server bouwen op Rocky1</h3>
+                <span class="server-badge badge-linux">SERVER: ROCKY1</span>
+                <ol class="step-list">
+                    <li>Voer de volgende commando's exact achter elkaar uit om de sleutels te maken:</li>
+                    <pre><span class="code-lang">bash</span>make-cadir ~/openvpn-ca
 cd ~/openvpn-ca
-./easyrsa init-pki
-
-# Certificaten genereren zonder wachtwoordrestrictie (nopass)
-./easyrsa build-ca nopass
+./easyrsa init-pki</pre>
+                    <li>Typ dit om de info aan te passen: <code>nano vars</code>. Scroll naar beneden, haal de <code>#</code> weg voor de velden en vul in: <code>NL</code>, <code>Utrecht</code>, <code>Utrecht</code>, <code>Institute for ICT</code>, <code>admin@ict.test</code>. Druk op <strong>Ctrl+O</strong>, dan <strong>Enter</strong>, dan <strong>Ctrl+X</strong>.</li>
+                    <li>Bouw de certificaten:</li>
+                    <pre><span class="code-lang">bash</span>./easyrsa build-ca nopass
 ./easyrsa gen-req server nopass
 ./easyrsa sign-req server server
-
-# Diffie-Hellman parameters en TLS-sleutel genereren
 ./easyrsa gen-dh
-openvpn --genkey secret ta.key</pre>
-            </div>
-
-            <div class="card">
-                <h3>Stap 3: Client Certificaat Genereren en Bestanden Kopiëren</h3>
-                <pre><span class="code-lang">bash</span># Maak een sleutel aan voor de client machine
+openvpn --genkey secret ta.key
 ./easyrsa gen-req client1 nopass
-./easyrsa sign-req client client1
-
-# Kopieer de gegenereerde sleutels naar de juiste OpenVPN systeemmappen
-sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
-            </div>
-
-            <div class="card">
-                <h3>Stap 4: Server Configureren en Route Pushen</h3>
-                <p>Maak het server configuratiebestand aan:</p>
-                <pre><span class="code-lang">bash</span>sudo nano /etc/openvpn/server/server.conf</pre>
-                <p>Plak de volgende configuratie erin. **Zorg dat de push-route naar jouw interne Windows LAN verwijst!**</p>
-                <pre><span class="code-lang">text</span>port 1194
+./easyrsa sign-req client client1</pre>
+                    <li>Verplaats de gemaakte bestanden naar de systeemmap met dit lange commando:</li>
+                    <pre><span class="code-lang">bash</span>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
+                    <li>Maak het configuratiebestand aan: <code>sudo nano /etc/openvpn/server/server.conf</code></li>
+                    <li>Plak dit er in zijn geheel in:</li>
+                    <pre><span class="code-lang">text</span>port 1194
 proto udp
 dev tun
 ca ca.crt
@@ -538,7 +247,6 @@ cert server.crt
 key server.key
 dh dh.pem
 server 10.8.0.0 255.255.255.0
-# HIER DE INTERNE ROUTE PUSHEN RICHTING WINDOWS AD NETWERK:
 push "route 192.168.1.0 255.255.255.0"
 keepalive 10 120
 tls-auth ta.key 0
@@ -549,198 +257,90 @@ persist-key
 persist-tun
 status openvpn-status.log
 verbosity 3</pre>
-                <p>Start de VPN-server-service op:</p>
-                <pre><span class="code-lang">bash</span>sudo systemctl enable --now openvpn-server@server</pre>
-            </div>
-        </div>
-
-        <div id="toetsE" class="section">
-            <h2 class="section-title">Volledig Werkprotocol: Voorbeeldtoets E</h2>
-            <p class="subtitle">Focus: Netwerkinfrastructuur (RRAS / NAT) en Group Policies (GPO).</p>
-
-            <div class="check"><strong>Toetsduur: 45 Minuten.</strong> Geen screenshots inleveren; live controle door beoordelaar op jouw schermen.</div>
-
-            <div class="card">
-                <h3>Fase 1: Systeemnamen & VMware Netwerken Klaarzetten (0-10 min)</h3>
-                <ol>
-                    <li>Log in op de Windows GUI router en hernoem de computer naar `RRAS1`. Start direct een herstart.</li>
-                    <li>Log in op de Core server. Typ `sconfig`, kies optie <strong>2 (Computer Name)</strong>, wijzig naar `Core1` en herstart.</li>
-                    <li>Open de <strong>Virtual Machine Settings</strong> in VMware en deel de netwerkkaarten exact zo in:
-                        <ul>
-                            <li><strong>DC1:</strong> Gekoppeld aan de interne switch waar je Active Directory leeft (bijv. <code>VMnet0</code>).</li>
-                            <li><strong>RRAS1 (Router):</strong> Moet in totaal 3 netwerkkaarten bezitten:
-                                <br>- Adapter 1: <code>VMnet0</code> (Interne koppeling met DC1).
-                                <br>- Adapter 2: Gekoppeld aan <code>Custom -> VMnet2</code> (Koppeling met Core1).
-                                <br>- Adapter 3: Gekoppeld aan <code>Custom -> VMnet8 (NAT)</code> (Koppeling met internet).
-                            </li>
-                            <li><strong>Core1:</strong> Gekoppeld aan <code>Custom -> VMnet2</code>.</li>
-                        </ul>
-                    </li>
+                    <li>Sla op: <strong>Ctrl+O</strong> > <strong>Enter</strong> > <strong>Ctrl+X</strong>.</li>
+                    <li>Start de server op: <code>sudo systemctl enable --now openvpn-server@server</code></li>
                 </ol>
             </div>
 
             <div class="card">
-                <h3>Fase 2: IP-Adressering & Ping Activeren (10-20 min)</h3>
-                <ol>
-                    <li><strong>Op RRAS1:</strong> Geef de interface in `VMnet2` het IP <code>172.19.19.1</code> (Subnet: `255.255.255.0`, geen gateway). De interface in `VMnet0` krijgt <code>192.168.1.10</code>.</li>
-                    <li><strong>Op Core1:</strong> Typ `sconfig` -> kies optie <strong>8 (Network Settings)</strong> -> Selecteer de netwerkkaart.
-                        <ul class="inner-step">
-                            <li>Kies optie <strong>1 (Set Network Adapter Address)</strong> -> Typ <strong>S</strong> (Static).</li>
-                            <li>IP-adres: <code>172.19.19.2</code> | Subnetmasker: <code>255.255.255.0</code></li>
-                            <li>Standaard Gateway: Het IP van de router: <code>172.19.19.1</code></li>
-                            <li>Kies optie <strong>2 (Set DNS Servers)</strong> -> Vul het IP van je DC1 in: <code>192.168.1.1</code></li>
-                        </ul>
-                    </li>
-                    <li><strong>Ping aanzetten op Core1:</strong> In `sconfig` -> Kies optie <strong>4 (Configure Remote Management)</strong> -> Kies optie <strong>3 (Configure Server Response to Ping)</strong> -> Klik op <strong>Yes</strong> (Enabled).</li>
+                <h3>Deel 3: Active Directory Sites opzetten (PLF09)</h3>
+                <span class="server-badge badge-dc">SERVER: DC1</span>
+                <ol class="step-list">
+                    <li>(Zorg dat je Core1 via PowerShell inmiddels hebt toegevoegd als Extra Domain Controller via de stappen uit Week 09).</li>
+                    <li>Druk op de <strong>Windows-toets</strong>, typ <code>dssite.msc</code> (Active Directory Sites and Services) en druk op <strong>Enter</strong>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de map <strong>Sites</strong> aan de linkerkant en kies <strong>New Site...</strong></li>
+                    <li>Typ de naam <code>Leeuwarden</code>, klik in de lijst op <code>DEFAULTIPSITELINK</code> en klik OK. Doe dit direct nog een keer voor site <code>Groningen</code>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de map <strong>Subnets</strong> en kies <strong>New Subnet...</strong></li>
+                    <li>Typ bij Prefix <code>192.168.1.0/24</code>, klik in de lijst eronder op <strong>Leeuwarden</strong> en klik OK.</li>
+                    <li>Typ bij Prefix <code>172.19.19.0/24</code>, klik in de lijst eronder op <strong>Groningen</strong> en klik OK.</li>
+                    <li>Klik links op de pijltjes om dit pad open te vouwen: <span class="gui-path">Sites</span> > <span class="gui-path">Default-First-Site-Name</span> > <span class="gui-path">Servers</span>.</li>
+                    <li>Klik op je DC1 server en <strong>sleep deze met je muis</strong> naar de map <strong>Leeuwarden</strong>.</li>
+                    <li>Klik op je Core1 server en <strong>sleep deze met je muis</strong> naar de map <strong>Groningen</strong>.</li>
                 </ol>
+
+                <h3>Deel 4: Replicatieschema Inrichten</h3>
+                <span class="server-badge badge-dc">SERVER: DC1</span>
+                <ol class="step-list">
+                    <li>Vouw links open: <span class="gui-path">Inter-Site Transports</span> > <span class="gui-path">IP</span>.</li>
+                    <li>Klik aan de rechterkant met de <strong>rechtermuisknop</strong> op <strong>DEFAULTIPSITELINK</strong> en kies <strong>Properties</strong>.</li>
+                    <li>Verander het getal bij <strong>Replicate every</strong> naar <code>30</code> minutes.</li>
+                    <li>Klik op de knop <strong>Change Schedule...</strong></li>
+                    <li>Klik op het witte bolletje <strong>Replication Not Available</strong>. Selecteer met je muis het héle schema om alles WIT te maken.</li>
+                    <li>Klik nu op het blauwe bolletje <strong>Replication Available</strong>. Selecteer in het rooster exact de vakjes voor <strong>Maandag tot Vrijdag, van 09:00 tot 18:00</strong>. Deze worden nu blauw. Klik OK > OK.</li>
+                    <li>Open <strong>Command Prompt</strong> en typ dit om de replicatie nu direct te pushen:</li>
+                    <pre><span class="code-lang">cmd</span>repadmin /syncall /AePdq</pre>
+                </ol>
+                <div class="check">Toets F is afgerond! Laat de succesvolle <code>repadmin</code> output en de draaiende Linux VPN op je schermen staan voor de beoordelaar.</div>
+            </div>
+            
+            <div id="week08" class="section">
+                <h2 class="section-title">Naslag: Week 08 (Routing / NAT)</h2>
+                <p>Zie de instructies onder "Toets E > Deel 1, 2 en 3" voor de exacte klikpaden voor deze opdracht.</p>
+            </div>
+            <div id="week09" class="section">
+                <h2 class="section-title">Naslag: Week 09 (AD Sites)</h2>
+                <p>Zie de instructies onder "Toets F > Deel 3 en 4" voor de exacte klikpaden voor deze opdracht.</p>
+            </div>
+            <div id="week10" class="section">
+                <h2 class="section-title">Naslag: Week 10 (GPO)</h2>
+                <p>Zie de instructies onder "Toets E > Deel 4 en 5" voor de exacte klikpaden voor deze opdracht.</p>
+            </div>
+            
+            <div id="week11" class="section">
+                <h2 class="section-title">Naslag: Week 11 (Certificaten AD-CS)</h2>
+                <div class="card">
+                    <h3>Enterprise Certificate Authority Installeren</h3>
+                    <span class="server-badge badge-dc">SERVER: DC1 (GUI)</span>
+                    <ol class="step-list">
+                        <li>Open <strong>Server Manager</strong>. Klik op <span class="gui-path">Manage</span> > <span class="gui-path">Add Roles and Features</span>.</li>
+                        <li>Klik <span class="gui-path">Next</span> tot 'Server Roles'. Vink <strong>Active Directory Certificate Services</strong> aan (Add features). Klik <span class="gui-path">Next</span> tot aan Install en installeer.</li>
+                        <li>Na de installatie verschijnt er een <strong>geel uitroepteken-icoontje</strong> (vlaggetje) bovenin Server Manager. Klik daarop en klik op <strong>Configure Active Directory Certificate Services...</strong></li>
+                        <li>Zorg dat je bent ingelogd als domein admin (bijv. <code>SCHOOL\Administrator</code>) en klik <span class="gui-path">Next</span>.</li>
+                        <li>Vink <strong>Certification Authority</strong> aan en klik <span class="gui-path">Next</span>.</li>
+                        <li>Selecteer <strong>Enterprise CA</strong> en klik <span class="gui-path">Next</span>. (Dit is cruciaal, hierdoor vertrouwen je PC's hem automatisch).</li>
+                        <li>Selecteer <strong>Root CA</strong> en klik <span class="gui-path">Next</span>.</li>
+                        <li>Selecteer <strong>Create a new private key</strong> en klik <span class="gui-path">Next</span>.</li>
+                        <li>Selecteer <strong>SHA256</strong> bovenaan de lijst en klik <span class="gui-path">Next</span> totdat je op <span class="gui-path">Configure</span> kunt klikken.</li>
+                    </ol>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Fase 3: RRAS NAT Installeren & Prioriteit Dwingen (20-30 min)</h3>
-                <ol>
-                    <li>Installeer de Remote Access rol op RRAS1 via PowerShell:
-                        <pre><span class="code-lang">powershell</span>Install-WindowsFeature -Name RemoteAccess, Routing -IncludeManagementTools</pre>
-                    </li>
-                    <li>Open <code>rrasmgmt.msc</code>. Rechtermuisknop op servernaam -> <em>Configure and Enable Routing...</em> -> Kies <strong>NAT</strong> -> Selecteer de interface die verbonden is met **VMnet8** (Internet) en rond de wizard af.</li>
-                    <li><strong>Gatway metric forceren op RRAS1 via PowerShell:</strong>
-                        <pre><span class="code-lang">powershell</span>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5
-Set-NetIPInterface -InterfaceAlias "Ethernet 0" -InterfaceMetric 80
-Set-NetIPInterface -InterfaceAlias "Ethernet 1" -InterfaceMetric 80</pre>
-                    </li>
-                </ol>
-                <div class="check"><strong>Mijlpaal Test:</strong> Typ op Core1 `ping 8.8.8.8` en `ping 192.168.1.1`. Krijg je 4x antwoord? Dan is deel 1 (PLF08) 100% gefixed!</div>
+            <div id="week12" class="section">
+                <h2 class="section-title">Naslag: Week 12 (OpenVPN)</h2>
+                <p>Zie de instructies onder "Toets F > Deel 1 en 2" voor de exacte commando's voor deze opdracht.</p>
             </div>
 
-            <div class="card">
-                <h3>Fase 4: Group Policies (GPO) Inrichten (30-45 min)</h3>
-                <ol>
-                    <li><strong>Gebruiker Bob aanmaken:</strong> Open op DC1 *Active Directory Users and Computers* (`dsa.msc`). Maak een OU aan genaamd `ToetsOU`, en maak daarin de gebruiker `bob` aan.</li>
-                    <li><strong>GPO "norun" bouwen:</strong> Open *Group Policy Management* (`gpmc.msc`). 
-                        <ul class="inner-step">
-                            <li>Maak onder Group Policy Objects een GPO aan genaamd `norun`.</li>
-                            <li>Rechtermuisknop -> *Edit*. Ga naar: `User Configuration -> Policies -> Templates -> System`. Zet <strong>Prevent access to the command prompt</strong> op **Enabled**.</li>
-                            <li>Koppel `norun` aan de OU `ToetsOU`. Rechtermuisknop op de koppeling -> Vink **Enforced** aan.</li>
-                        </ul>
-                    </li>
-                    <li><strong>GPO "wachtwoord" bouwen:</strong>
-                        <ul class="inner-step">
-                            <li>Maak onder Group Policy Objects een GPO aan genaamd `wachtwoord`.</li>
-                            <li>Rechtermuisknop -> *Edit*. Ga naar: `Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Account Policies -> Password Policy`.</li>
-                            <li>Stel in: *Enforce password history* = **3**, *Maximum password age* = **20**, *Minimum password length* = **10**.</li>
-                            <li><strong>Koppel deze GPO direct aan de ROOT van het domein (bijv. school.test)</strong>. Rechtermuisknop op deze koppeling -> Vink **Enforced** aan.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Verplicht HTML Rapport genereren op DC1 via PowerShell:</strong>
-                        <pre><span class="code-lang">powershell</span>Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path C:\report.html</pre>
-                    </li>
-                </ol>
-                <div class="check"><strong>Eindcontrole voor de docent:</strong> Log in op PC1 als `bob`. Probeer CMD te starten (moet blokkeren). Open `C:\report.html` op het scherm van de DC en laat het openstaan voor de beoordelaar.</div>
-            </div>
-        </div>
-
-        <div id="toetsF" class="section">
-            <h2 class="section-title">Volledig Werkprotocol: Voorbeeldtoets F</h2>
-            <p class="subtitle">Focus: Linux OpenVPN Tunneling en Active Directory Sites & Replication.</p>
-
-            <div class="card">
-                <h3>Fase 1: Linux Netwerkkonstruksie & Repository Reparatie</h3>
-                <ol>
-                    <li>Laad `rocky2` in via VMware: `VM -> Open -> E:\Childs\rocky2 (RL8)\rocky2.vmx`.</li>
-                    <li>Zet de netwerkkaarten in VMware goed:
-                        <ul>
-                            <li><strong>rocky1 (VPN Server):</strong> Interface 1 = `VMnet0` (Interne switch met DC1). Interface 2 (Toevoegen!) = `Custom -> VMnet8 (NAT)`.</li>
-                            <li><strong>rocky2 (VPN Client):</strong> Enige interface = `Custom -> VMnet8 (NAT)`.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Repareer de repositories op BEIDE Linux machines:</strong>
-                        <pre><span class="code-lang">bash</span>sudo rm -f /etc/yum.repos.d/Rocky-*
-sudo dnf reinstall rocky-repos -y
-sudo dnf install epel-release -y
-sudo dnf install openvpn easy-rsa -y</pre>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Fase 2: Certificaten & VPN Configureren op Rocky1</h3>
-                <ol>
-                    <li>Initialiseer Easy-RSA op `rocky1`:
-                        <pre><span class="code-lang">bash</span>make-cadir ~/openvpn-ca && cd ~/openvpn-ca && ./easyrsa init-pki</pre>
-                    </li>
-                    <li>Pas de certificaatgegevens aan: `nano vars`. Pas de velden onderaan aan naar de criteria uit de toets: Country = `NL`, Province/City = `Utrecht`, Org = `Institute for ICT`, Email = `admin@ict.test`.</li>
-                    <li>Genereer de server- en clientsleutels:
-                        <pre><span class="code-lang">bash</span>./easyrsa build-ca nopass
-./easyrsa gen-req server nopass
-./easyrsa sign-req server server
-./easyrsa gen-dh
-openvpn --genkey secret ta.key
-./easyrsa gen-req client1 nopass
-./easyrsa sign-req client client1</pre>
-                    </li>
-                    <li>Verplaats alles naar de openvpn map:
-                        <pre><span class="code-lang">bash</span>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
-                    </li>
-                    <li>Maak de server configuratie aan: `sudo nano /etc/openvpn/server/server.conf`. Plak de standaardconfiguratie erin en zorg dat deze regel erin staat om het interne LAN te pushen:
-                        <br><code>push "route 192.168.1.0 255.255.255.0"</code>
-                    </li>
-                    <li>Start de server: `sudo systemctl enable --now openvpn-server@server`.</li>
-                </ol>
-            </div>
-
-            <div class="card">
-                <h3>Fase 3: Client Koppelen (rocky2) & Verbinding Verifiëren</h3>
-                <ol>
-                    <li>Zet de bestanden `ca.crt`, `client1.crt`, `client1.key` en `ta.key` op een veilige manier over naar `rocky2` (bijvoorbeeld via SCP of een gedeelde map).</li>
-                    <li>Maak op `rocky2` het bestand `/etc/openvpn/client/client.conf` aan.</li>
-                    <li>Vul bij de regel <code>remote [IP-ADRES] 1194</code> het exacte **NAT-IP-adres** van `rocky1` in.</li>
-                    <li>Start de VPN client op `rocky2`:
-                        <pre><span class="code-lang">bash</span>sudo systemctl enable --now openvpn-client@client</pre>
-                    </li>
-                </ol>
-                <div class="check"><strong>Mijlpaal Test:</strong> Typ op `rocky2` het commando `ping 192.168.1.1`. Krijg je antwoord van de Windows DC? Dan werkt de Linux VPN-tunnel foutloos.</div>
-            </div>
-
-            <div class="card">
-                <h3>Fase 4: Active Directory Sites & Replicatieschema</h3>
-                <ol>
-                    <li>Promoveer `Core1` tot extra domeincontroller in het domein `school.test` (Zie stappen bij week 09).</li>
-                    <li>Open <strong>Active Directory Sites and Services</strong> (`dssite.msc`) op de hoofd-DC.</li>
-                    <li>Maak twee nieuwe sites aan: `Leeuwarden` en `Groningen`.</li>
-                    <li>Sleep server `DC1` naar site Leeuwarden, en server `Core1` naar site Groningen.</li>
-                    <li>Maak de subnets aan: `192.168.1.0/24` (Koppelen aan Leeuwarden) en `172.19.19.0/24` (Koppelen aan Groningen).</li>
-                    <li>Ga naar `Inter-Site Transports -> IP`. Open de eigenschappen van de sitelink.
-                        <ul class="inner-step">
-                            <li>Zet <strong>Replicate every</strong> op <code>30</code> minuten.</li>
-                            <li>Klik op <strong>Change Schedule</strong>. Selecteer Maandag t/m Vrijdag tussen 09:00 en 18:00 -> zet op *Replication Available*. Zet de rest van de uren/vakken volledig op *Not Available* (wit).</li>
-                        </ul>
-                    </li>
-                    <li>Forceer de initiële replicatie via de opdrachtprompt:
-                        <pre><span class="code-lang">cmd</span>repadmin /syncall /AePdq</pre>
-                    </li>
-                </ol>
-                <div class="check">Laat voor de docent het visuele schema (Change Schedule) openstaan op je scherm en typ `repadmin /showrepl` om aan te tonen dat de synchronisatie vlekkeloos is verlopen.</div>
-            </div>
         </div>
     </main>
 
     <script>
         function showSection(sectionId) {
-            // Verberg alle secties
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(sec => sec.classList.remove('active'));
-
-            // Deactiveer alle links
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            // Toon geselecteerde sectie
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-
-            // Activeer de geklikte link
-            const clickedLink = Array.from(navLinks).find(link => link.getAttribute('onclick').includes(sectionId));
-            if (clickedLink) clickedLink.classList.add('active');
             
-            // Scroll soepel naar boven
+            const clickedLink = Array.from(document.querySelectorAll('.nav-link')).find(link => link.getAttribute('onclick').includes(sectionId));
+            if (clickedLink) clickedLink.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
