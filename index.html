@@ -115,7 +115,7 @@
                 <ol class="step-list">
                     <li>Log in op <strong>Core1</strong>. Het zwarte CMD-scherm opent.</li>
                     <li>Typ <code>sconfig</code> en druk op <strong>Enter</strong>.</li>
-                    <li>Typ <code>2</code> (Computer Name) en druk op <strong>Enter</strong>. Typ de naam <code>Core1</code> en druk op <strong>Enter</strong>. Hij vraagt om een herstart, klik <strong>Yes</strong>.</li>
+                    <li>Typ <code>2</code> (Computer Name) en druk op <strong>Enter</strong>. Typ die naam <code>Core1</code> en druk op <strong>Enter</strong>. Hij vraagt om een herstart, klik <strong>Yes</strong>.</li>
                     <li>Na herstart log je weer in en typ je weer <code>sconfig</code>.</li>
                     <li>Typ <code>4</code> (Configure Remote Management) > Typ <code>3</code> (Configure Server Response to Ping) > Klik <strong>Yes</strong> in de pop-up. (Ping is nu aan).</li>
                     <li>Typ <code>4</code> (Return to main menu).</li>
@@ -129,7 +129,7 @@
                 <ol class="step-list">
                     <li>Log in op <strong>RRAS1</strong>. Druk op de <strong>Windows-toets</strong>, typ <code>PowerShell</code> en druk op <strong>Enter</strong>.</li>
                     <li>Kopieer, plak en voer deze commando's één voor één uit:</li>
-                    <pre><span class="code-lang">powershell</span># Interface naar Core1 instellen:
+<pre># Interface naar Core1 instellen:
 New-NetIPAddress -InterfaceAlias "Ethernet 1" -IPAddress 172.19.19.1 -PrefixLength 24
 
 # Interface naar de Domain Controller (DC1) instellen:
@@ -147,11 +147,11 @@ New-NetIPAddress -InterfaceAlias "Ethernet 0" -IPAddress 192.168.1.10 -PrefixLen
                     <li>Vink <strong>DirectAccess and VPN (RAS)</strong> aan (Klik 'Add Features' in de pop-up). Vink ook <strong>Routing</strong> aan.</li>
                     <li>Klik op <span class="gui-path">Next</span> en daarna op <span class="gui-path">Install</span>. Wacht tot hij klaar is en klik <span class="gui-path">Close</span>.</li>
                     <li>Druk op de <strong>Windows-toets</strong>, typ <code>rrasmgmt.msc</code> en druk op <strong>Enter</strong>.</li>
-                    <li>Klik met de <strong>rechtermuisknop</strong> op de naam van je server en klik op <strong>Configure and Enable Routing and Remote Access</strong>.</li>
+                    <li>Klik met de <strong>rechtermuisknop</strong> op de naam van je server og klik op <strong>Configure and Enable Routing and Remote Access</strong>.</li>
                     <li>Klik <span class="gui-path">Next</span>, selecteer <strong>Network address translation (NAT)</strong> en klik <span class="gui-path">Next</span>.</li>
                     <li>Selecteer de netwerkkaart die met VMnet8 (het internet) is verbonden. Klik <span class="gui-path">Next</span> en dan <span class="gui-path">Finish</span>.</li>
                     <li><strong>Gateway-conflict fixen:</strong> Open PowerShell op RRAS1 en voer dit uit om te zorgen dat het internet altijd voorrang krijgt:</li>
-                    <pre><span class="code-lang">powershell</span>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5
+<pre>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5
 Set-NetIPInterface -InterfaceAlias "Ethernet 0" -InterfaceMetric 80
 Set-NetIPInterface -InterfaceAlias "Ethernet 1" -InterfaceMetric 80</pre>
                 </ol>
@@ -189,7 +189,7 @@ Set-NetIPInterface -InterfaceAlias "Ethernet 1" -InterfaceMetric 80</pre>
                 <ol class="step-list">
                     <li>Open <strong>PowerShell</strong> op DC1.</li>
                     <li>Voer dit commando uit om je HTML bewijs te maken:</li>
-                    <pre><span class="code-lang">powershell</span>Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path C:\report.html</pre>
+<pre>Get-GPO -Name "wachtwoord" | Get-GPOReport -ReportType HTML -Path C:\report.html</pre>
                     <li>Log op een werkplek in als <code>bob</code> en laat de docent zien dat CMD blokkeert!</li>
                 </ol>
             </div>
@@ -207,8 +207,8 @@ Set-NetIPInterface -InterfaceAlias "Ethernet 1" -InterfaceMetric 80</pre>
                         <br>- <strong>rocky1:</strong> Adapter 1 = <strong>Custom: VMnet0</strong> (naar DC1). Voeg een 2e Adapter toe via Settings > Add en zet deze op <strong>Custom: VMnet8 (NAT)</strong>.
                         <br>- <strong>rocky2:</strong> Heeft maar 1 adapter nodig. Zet deze op <strong>Custom: VMnet8 (NAT)</strong>.
                     </li>
-                    <li>Log in op <strong>BEIDE</strong> Linux machines als root en voer op <strong>allebei</strong> dit uit om de repo's te fixen:</li>
-                    <pre><span class="code-lang">bash</span>sudo rm -f /etc/yum.repos.d/Rocky-*
+                    <li>Log in op <strong>BEIDE</strong> Linux machines als root en voer op <strong>allebei</strong> dit uit om de repo's en software te fixen:</li>
+<pre>sudo rm -f /etc/yum.repos.d/Rocky-*
 sudo dnf reinstall rocky-repos -y
 sudo dnf install epel-release -y
 sudo dnf install openvpn easy-rsa -y</pre>
@@ -219,24 +219,24 @@ sudo dnf install openvpn easy-rsa -y</pre>
                 <h3>Deel 2: OpenVPN Server bouwen op Rocky1</h3>
                 <span class="server-badge badge-linux">SERVER: ROCKY1</span>
                 <ol class="step-list">
-                    <li>Voer deze commando's achter elkaar uit:</li>
-                    <pre><span class="code-lang">bash</span>make-cadir ~/openvpn-ca
+                    <li>Voer deze commando's achter elkaar uit om de CA op te zetten:</li>
+<pre>mkdir ~/openvpn-ca
 cd ~/openvpn-ca
-./easyrsa init-pki</pre>
+easyrsa init-pki</pre>
                     <li>Typ <code>nano vars</code>. Haal de <code>#</code> weg en vul onderaan in: <code>NL</code>, <code>Utrecht</code>, <code>Utrecht</code>, <code>Institute for ICT</code>, <code>admin@ict.test</code>. Druk op <strong>Ctrl+O</strong> > <strong>Enter</strong> > <strong>Ctrl+X</strong>.</li>
-                    <li>Bouw de certificaten:</li>
-                    <pre><span class="code-lang">bash</span>./easyrsa build-ca nopass
-./easyrsa gen-req server nopass
-./easyrsa sign-req server server
-./easyrsa gen-dh
+                    <li>Bouw de certificaten zonder de `./` prefix:</li>
+<pre>easyrsa build-ca nopass
+easyrsa gen-req server nopass
+easyrsa sign-req server server
+easyrsa gen-dh
 openvpn --genkey secret ta.key
-./easyrsa gen-req client1 nopass
-./easyrsa sign-req client client1</pre>
+easyrsa gen-req client1 nopass
+easyrsa sign-req client client1</pre>
                     <li>Verplaats de bestanden naar de server map:</li>
-                    <pre><span class="code-lang">bash</span>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
+<pre>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
                     <li>Maak de configuratie aan: <code>sudo nano /etc/openvpn/server/server.conf</code></li>
-                    <li>Plak dit er in:</li>
-                    <pre><span class="code-lang">text</span>port 1194
+                    <li>Plak dit bestand erin (Let op: onderaan staat <strong>verb 3</strong>, géén verbosity!):</li>
+<pre>port 1194
 proto udp
 dev tun
 ca ca.crt
@@ -253,8 +253,17 @@ group nobody
 persist-key
 persist-tun
 status openvpn-status.log
-verbosity 3</pre>
-                    <li>Sla op (<strong>Ctrl+O</strong> > <strong>Enter</strong> > <strong>Ctrl+X</strong>) en start de server: <code>sudo systemctl enable --now openvpn-server@server</code></li>
+verb 3</pre>
+                    <li>Sla op (<strong>Ctrl+O</strong> > <strong>Enter</strong> > <strong>Ctrl+X</strong>).</li>
+                    <li><strong>BELANGRIJK: Open de Firewall en zet Routering aan op Rocky1!</strong> Voer deze commando's uit:</li>
+<pre>sudo firewall-cmd --zone=public --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=external --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=trusted --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=public --add-masquerade --permanent
+sudo firewall-cmd --zone=external --add-masquerade --permanent
+sudo firewall-cmd --reload
+sudo sysctl -w net.ipv4.ip_forward=1</pre>
+                    <li>Start nu de serverdienst op Rocky1: <code>sudo systemctl enable --now openvpn-server@server</code></li>
                 </ol>
             </div>
             
@@ -262,13 +271,34 @@ verbosity 3</pre>
                 <h3>Deel 3: Client Koppelen (rocky2)</h3>
                 <span class="server-badge badge-linux">SERVER: ROCKY2</span>
                 <ol class="step-list">
-                    <li>Zet op rocky2 de benodigde bestanden (<code>ca.crt</code>, <code>client1.crt</code>, <code>client1.key</code> en <code>ta.key</code>) in de map <code>/etc/openvpn/client/</code>. (Dit kun je doen via SSH/SCP of via een shared folder).</li>
-                    <li>Typ: <code>sudo nano /etc/openvpn/client/client.conf</code> op rocky2.</li>
-                    <li>Zorg dat je verwijst naar het IP van rocky1. Vul in: <code>remote [VUL-HIER-HET-NAT-IP-VAN-ROCKY1-IN] 1194</code>.</li>
-                    <li>Start de clientverbinding op:
-                        <pre><span class="code-lang">bash</span>sudo systemctl enable --now openvpn-client@client</pre>
+                    <li>Zorg eerst dat de mappenstructuur bestaat: <code>sudo mkdir -p /etc/openvpn/client/</code></li>
+                    <li>Trek de sleutels veilig over vanaf Rocky1 via SCP (vervang <code>[NAT-IP-ROCKY1]</code> door het IP van ens224):
+<pre>sudo scp wnagtegaal@[NAT-IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/ca.crt wnagtegaal@[NAT-IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/issued/client1.crt wnagtegaal@[NAT-IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/private/client1.key wnagtegaal@[NAT-IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/ta.key /etc/openvpn/client/</pre>
                     </li>
-                    <li>Test met <code>ping 192.168.1.1</code>. Krijg je antwoord? Dan is de VPN perfect!</li>
+                    <li>Typ: <code>sudo nano /etc/openvpn/client/client.conf</code> op rocky2.</li>
+                    <li>Plak deze configuratie erin en vul het juiste IP in bij remote:</li>
+<pre>client
+dev tun
+proto udp
+remote [NAT-IP-VAN-ROCKY1] 1194
+resolv-retry infinite
+nobind
+user nobody
+group nobody
+persist-key
+persist-tun
+ca ca.crt
+cert client1.crt
+key client1.key
+remote-cert-tls server
+tls-auth ta.key 1
+cipher AES-256-GCM
+verb 3</pre>
+                    <li>Sla op met Ctrl+O > Enter > Ctrl+X.</li>
+                    <li>Start de clientverbinding op rocky2:
+<pre>sudo systemctl enable --now openvpn-client@client</pre>
+                    </li>
+                    <li>Test vanaf rocky2 met: <code>ping -c 3 192.168.1.1</code>. Krijg je antwoord? Dan werkt de VPN perfect!</li>
                 </ol>
             </div>
 
@@ -292,7 +322,7 @@ verbosity 3</pre>
                     <li>Zet alles op wit (klik <strong>Replication Not Available</strong> en selecteer alles).</li>
                     <li>Selecteer het blok <strong>Maandag t/m Vrijdag, 09:00 tot 18:00</strong> en klik op <strong>Replication Available</strong> (wordt blauw). Klik OK.</li>
                     <li>Open <strong>Command Prompt</strong> en forceer replicatie:</li>
-                    <pre><span class="code-lang">cmd</span>repadmin /syncall /AePdq</pre>
+<pre>repadmin /syncall /AePdq</pre>
                 </ol>
                 <div class="check">Toets F is afgerond! Laat je Command Prompt en Linux Pings openstaan.</div>
             </div>
@@ -308,10 +338,10 @@ verbosity 3</pre>
                 <ol class="step-list">
                     <li>Druk op de <strong>Windows-toets</strong>, typ <code>PowerShell</code> en druk op <strong>Enter</strong>.</li>
                     <li>Stel de interne netwerkkaart (naar DC1) in:
-                        <pre><span class="code-lang">powershell</span>New-NetIPAddress -InterfaceAlias "Ethernet 0" -IPAddress 192.168.1.10 -PrefixLength 24</pre>
+<pre>New-NetIPAddress -InterfaceAlias "Ethernet 0" -IPAddress 192.168.1.10 -PrefixLength 24</pre>
                     </li>
                     <li>Stel de tweede netwerkkaart (naar Core1) in:
-                        <pre><span class="code-lang">powershell</span>New-NetIPAddress -InterfaceAlias "Ethernet 1" -IPAddress 172.19.19.1 -PrefixLength 24</pre>
+<pre>New-NetIPAddress -InterfaceAlias "Ethernet 1" -IPAddress 172.19.19.1 -PrefixLength 24</pre>
                     </li>
                 </ol>
             </div>
@@ -339,7 +369,7 @@ verbosity 3</pre>
                     <li>Selecteer in de lijst de netwerkkaart die verbonden is met het internet (vaak een IP uit de <code>192.168.91.x</code> reeks via DHCP) en klik <span class="gui-path">Next</span>.</li>
                     <li>Klik op <span class="gui-path">Finish</span>.</li>
                     <li>Zorg dat internet voorrang krijgt via PowerShell:
-                        <pre><span class="code-lang">powershell</span>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5</pre>
+<pre>Set-NetIPInterface -InterfaceAlias "VMnet8" -InterfaceMetric 5</pre>
                     </li>
                 </ol>
             </div>
@@ -355,10 +385,10 @@ verbosity 3</pre>
                 <ol class="step-list">
                     <li>Log in op <strong>Core1</strong>. Typ <code>powershell</code> in het zwarte CMD-scherm.</li>
                     <li>Installeer de benodigde server rollen:
-                        <pre><span class="code-lang">powershell</span>Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools</pre>
+<pre>Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools</pre>
                     </li>
                     <li>Voeg de server toe aan het bestaande domein als Domain Controller:
-                        <pre><span class="code-lang">powershell</span>Install-ADDSDomainController -DomainName "school.test" -Credential (Get-Credential)</pre>
+<pre>Install-ADDSDomainController -DomainName "school.test" -Credential (Get-Credential)</pre>
                     </li>
                     <li>Er popt een inlogschermpje op: typ <code>school\Administrator</code> met je wachtwoord. Druk op Enter en laat de server herstarten.</li>
                 </ol>
@@ -476,7 +506,7 @@ verbosity 3</pre>
                 <ol class="step-list">
                     <li>Open de terminal van Rocky1 en Rocky2 en log in als root (<code>su -</code>).</li>
                     <li>Repareer de repositories en installeer de tools op <strong>beide</strong> systemen door dit uit te voeren:
-                        <pre><span class="code-lang">bash</span>sudo rm -f /etc/yum.repos.d/Rocky-*
+<pre>sudo rm -f /etc/yum.repos.d/Rocky-*
 sudo dnf reinstall rocky-repos -y
 sudo dnf install epel-release -y
 sudo dnf install openvpn easy-rsa -y</pre>
@@ -488,23 +518,23 @@ sudo dnf install openvpn easy-rsa -y</pre>
                 <h3>2. Certificaten Maken (Op de Server)</h3>
                 <span class="server-badge badge-linux">SERVER: ROCKY1</span>
                 <ol class="step-list">
-                    <li>Kopieer dit naar je terminal om de certificatenmap klaar te zetten:
-                        <pre><span class="code-lang">bash</span>make-cadir ~/openvpn-ca
+                    <li>Kopieer dit naar je terminal om de certificatenmap klaar te zetten (Hier gebruiken we mkdir!):
+<pre>mkdir ~/openvpn-ca
 cd ~/openvpn-ca
-./easyrsa init-pki</pre>
+easyrsa init-pki</pre>
                     </li>
                     <li>Typ <code>nano vars</code>. Pas de gegevens (Country, City, Org) aan naar de eisen van de opdracht. Sla op met <strong>Ctrl+O, Enter, Ctrl+X</strong>.</li>
                     <li>Genereer de server- én clientsleutels achter elkaar:
-                        <pre><span class="code-lang">bash</span>./easyrsa build-ca nopass
-./easyrsa gen-req server nopass
-./easyrsa sign-req server server
-./easyrsa gen-dh
+<pre>easyrsa build-ca nopass
+easyrsa gen-req server nopass
+easyrsa sign-req server server
+easyrsa gen-dh
 openvpn --genkey secret ta.key
-./easyrsa gen-req client1 nopass
-./easyrsa sign-req client client1</pre>
+easyrsa gen-req client1 nopass
+easyrsa sign-req client client1</pre>
                     </li>
                     <li>Plaats de benodigde bestanden in de OpenVPN servermap:
-                        <pre><span class="code-lang">bash</span>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
+<pre>sudo cp pki/ca.crt pki/issued/server.crt pki/private/server.key dh.pem ta.key /etc/openvpn/server/</pre>
                     </li>
                 </ol>
             </div>
@@ -514,8 +544,8 @@ openvpn --genkey secret ta.key
                 <span class="server-badge badge-linux">SERVER: ROCKY1</span>
                 <ol class="step-list">
                     <li>Typ: <code>sudo nano /etc/openvpn/server/server.conf</code></li>
-                    <li>Plak dit bestand er in. <strong>Let op:</strong> De <code>push route</code> regel moet verwijzen naar het netwerk van je Windows DC1!
-                        <pre><span class="code-lang">text</span>port 1194
+                    <li>Plak dit bestand er in. (Onderaan staat netjes <strong>verb 3</strong>!)
+<pre>port 1194
 proto udp
 dev tun
 ca ca.crt
@@ -532,25 +562,53 @@ group nobody
 persist-key
 persist-tun
 status openvpn-status.log
-verbosity 3</pre>
+verb 3</pre>
                     </li>
-                    <li>Sla op (Ctrl+O, Enter, Ctrl+X) en start de VPN:
-                        <pre><span class="code-lang">bash</span>sudo systemctl enable --now openvpn-server@server</pre>
+                    <li><strong>Voeg de cruciale firewall- en routeringsregels toe op Rocky1:</strong></li>
+<pre>sudo firewall-cmd --zone=public --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=external --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=trusted --add-port=1194/udp --permanent
+sudo firewall-cmd --zone=public --add-masquerade --permanent
+sudo firewall-cmd --zone=external --add-masquerade --permanent
+sudo firewall-cmd --reload
+sudo sysctl -w net.ipv4.ip_forward=1</pre>
+                    <li>Sla op en start de VPN:
+<pre>sudo systemctl enable --now openvpn-server@server</pre>
                     </li>
                 </ol>
             </div>
 
             <div class="card">
-                <h3>4. Client Koppelen</h3>
+                <h3>4. Client Map en Koppeling</h3>
                 <span class="server-badge badge-linux">SERVER: ROCKY2</span>
                 <ol class="step-list">
-                    <li>Kopieer de bestanden <code>ca.crt</code>, <code>client1.crt</code>, <code>client1.key</code> en <code>ta.key</code> vanaf rocky1 veilig naar rocky2.</li>
-                    <li>Typ: <code>sudo nano /etc/openvpn/client/client.conf</code> op rocky2.</li>
-                    <li>Geef de remote verbinding op: <code>remote [IP-VAN-ROCKY1] 1194</code>. Sla op.</li>
-                    <li>Start de clientverbinding op:
-                        <pre><span class="code-lang">bash</span>sudo systemctl enable --now openvpn-client@client</pre>
+                    <li>Maak de map aan: <code>sudo mkdir -p /etc/openvpn/client/</code></li>
+                    <li>Kopieer de bestanden vanaf rocky1 via SCP:
+<pre>sudo scp wnagtegaal@[IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/ca.crt wnagtegaal@[IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/issued/client1.crt wnagtegaal@[IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/pki/private/client1.key wnagtegaal@[IP-ROCKY1]:/home/wnagtegaal/openvpn-ca/ta.key /etc/openvpn/client/</pre>
                     </li>
-                    <li>Test vanaf rocky2 met <code>ping 192.168.1.1</code>. Krijg je antwoord? Tunnel geslaagd!</li>
+                    <li>Typ: <code>sudo nano /etc/openvpn/client/client.conf</code> op rocky2.</li>
+                    <li>Plak deze configuratie en vul het IP van Rocky1 in:</li>
+<pre>client
+dev tun
+proto udp
+remote [IP-VAN-ROCKY1] 1194
+resolv-retry infinite
+nobind
+user nobody
+group nobody
+persist-key
+persist-tun
+ca ca.crt
+cert client1.crt
+key client1.key
+remote-cert-tls server
+tls-auth ta.key 1
+cipher AES-256-GCM
+verb 3</pre>
+                    <li>Start de clientverbinding op:
+<pre>sudo systemctl enable --now openvpn-client@client</pre>
+                    </li>
+                    <li>Test vanaf rocky2 met <code>ping -c 3 192.168.1.1</code>. Tunnel geslaagd!</li>
                 </ol>
             </div>
         </div>
